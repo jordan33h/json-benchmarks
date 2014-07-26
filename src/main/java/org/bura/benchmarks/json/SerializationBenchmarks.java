@@ -1,40 +1,25 @@
 package org.bura.benchmarks.json;
 
-import groovy.json.JsonOutput;
-import groovy.json.JsonSlurper;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
-
-import org.boon.json.serializers.impl.JsonSimpleSerializerImpl;
-import org.bura.benchmarks.json.domain.CityInfo;
-import org.bura.benchmarks.json.domain.Repo;
-import org.bura.benchmarks.json.domain.Request;
-import org.bura.benchmarks.json.domain.UserProfile;
-import org.openjdk.jmh.annotations.BenchmarkMode;
-import org.openjdk.jmh.annotations.Fork;
-import org.openjdk.jmh.annotations.GenerateMicroBenchmark;
-import org.openjdk.jmh.annotations.Level;
-import org.openjdk.jmh.annotations.Measurement;
-import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Param;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.annotations.Warmup;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.wizzardo.tools.json.Binder;
+import groovy.json.JsonOutput;
+import org.boon.json.serializers.impl.JsonSimpleSerializerImpl;
+import org.bura.benchmarks.json.domain.CityInfo;
+import org.bura.benchmarks.json.domain.Repo;
+import org.bura.benchmarks.json.domain.Request;
+import org.bura.benchmarks.json.domain.UserProfile;
+import org.openjdk.jmh.annotations.*;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.Throughput)
@@ -53,17 +38,14 @@ public class SerializationBenchmarks {
     private static final String DATA_STYLE_MAPLIST = "maplist";
 
     @Param({ RESOURCE_CITYS, RESOURCE_REPOS, RESOURCE_USER, RESOURCE_REQUEST })
+//    @Param({ RESOURCE_CITYS})
     private String resourceName;
-
-    @Param({ DATA_STYLE_POJO, DATA_STYLE_MAPLIST })
-    private String dataStyle;
 
     private Object data;
 
     @Setup(Level.Iteration)
     public void setup() throws JsonParseException, JsonMappingException, IOException {
         String resource = Helper.getResource(resourceName + ".json");
-        if (dataStyle == DATA_STYLE_POJO) {
             switch (resourceName) {
             case RESOURCE_CITYS:
                 data = jacksonMapper.readValue(resource, CityInfo[].class);
@@ -74,19 +56,14 @@ public class SerializationBenchmarks {
 
                 break;
             case RESOURCE_USER:
-                data = jacksonMapper.readValue(resource, UserProfile.class);
+                data = jacksonMapper.readValue(resource, UserProfile[].class);
 
                 break;
             case RESOURCE_REQUEST:
-                data = jacksonMapper.readValue(resource, Request.class);
+                data = jacksonMapper.readValue(resource, Request[].class);
 
                 break;
             }
-            needCastToMap = false;
-        } else {
-            data = new JsonSlurper().parseText(resource);
-            needCastToMap = Arrays.asList(RESOURCE_USER, RESOURCE_REQUEST).contains(resourceName);
-        }
     }
 
     private ObjectMapper initMapper() {
@@ -119,6 +96,11 @@ public class SerializationBenchmarks {
         return boon.serialize(data).toString();
     }
 
+    @GenerateMicroBenchmark
+    public String tools() {
+        return Binder.toJSON(data);
+    }
+
     /*
      * Workaround for Groovy before 2.3. (http://jira.codehaus.org/browse/GROOVY-6633)
      */
@@ -126,12 +108,6 @@ public class SerializationBenchmarks {
 
     @GenerateMicroBenchmark
     public String groovy() {
-        String json;
-        if (needCastToMap) {
-            json = JsonOutput.toJson((Map<?, ?>) data);
-        } else {
-            json = JsonOutput.toJson(data);
-        }
-        return json;
+        return JsonOutput.toJson(data);
     }
 }

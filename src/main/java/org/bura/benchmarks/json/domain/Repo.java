@@ -1,6 +1,5 @@
 package org.bura.benchmarks.json.domain;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,9 +53,9 @@ public class Repo {
     private String notifications_url;
     private String labels_url;
     private String releases_url;
-    private Date created_at;
-    private Date updated_at;
-    private Date pushed_at;
+    private String created_at;
+    private String updated_at;
+    private String pushed_at;
     private String git_url;
     private String ssh_url;
     private String clone_url;
@@ -434,27 +433,27 @@ public class Repo {
         this.releases_url = releases_url;
     }
 
-    public Date getCreated_at() {
+    public String getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(Date created_at) {
+    public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
 
-    public Date getUpdated_at() {
+    public String getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at(Date updated_at) {
+    public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
 
-    public Date getPushed_at() {
+    public String getPushed_at() {
         return pushed_at;
     }
 
-    public void setPushed_at(Date pushed_at) {
+    public void setPushed_at(String pushed_at) {
         this.pushed_at = pushed_at;
     }
 

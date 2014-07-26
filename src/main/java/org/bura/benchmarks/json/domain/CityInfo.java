@@ -1,5 +1,7 @@
 package org.bura.benchmarks.json.domain;
 
+import java.util.List;
+
 /**
  * Information about city.
  * 
@@ -11,12 +13,12 @@ public class CityInfo {
     private String city;
     private String state;
     private Integer pop;
-    private Integer[] loc;
+    private List<Float> loc;
 
     public CityInfo() {
     }
 
-    public CityInfo(String id, String city, String state, Integer pop, Integer[] loc) {
+    public CityInfo(String id, String city, String state, Integer pop, List<Float> loc) {
         this.id = id;
         this.city = city;
         this.state = state;
@@ -71,11 +73,11 @@ public class CityInfo {
     /**
      *  The city location. Specified as latitude and longitude pair.
      */
-    public Integer[] getLoc() {
+    public List<Float> getLoc() {
         return loc;
     }
 
-    public void setLoc(Integer[] loc) {
+    public void setLoc(List<Float> loc) {
         this.loc = loc;
     }
 

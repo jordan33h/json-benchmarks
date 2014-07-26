@@ -1,6 +1,5 @@
 package org.bura.benchmarks.json.domain;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,11 +26,14 @@ public class UserProfile {
     private String etag;
     private Boolean active;
     private Boolean deleted;
-    private Date latsAccsess;
+    private String lastAccess;
     private List<Like> likes;
 
+    private UserProfile(){
+    }
+
     public UserProfile(String id, Long profileViews, String email, UserNames name, Integer gender, String birthday, List<Location> locations, String image, String cover,
-            String aboutMe, String etag, Boolean active, Boolean deleted, Date latsAccsess, List<Like> likes) {
+            String aboutMe, String etag, Boolean active, Boolean deleted, String lastAccess, List<Like> likes) {
 
         this.id = id;
         this.profileViews = profileViews;
@@ -46,7 +48,7 @@ public class UserProfile {
         this.etag = etag;
         this.active = active;
         this.deleted = deleted;
-        this.latsAccsess = latsAccsess;
+        this.lastAccess = lastAccess;
         this.likes = likes;
     }
 
@@ -154,12 +156,12 @@ public class UserProfile {
         this.deleted = deleted;
     }
 
-    public Date getLatsAccsess() {
-        return latsAccsess;
+    public String getLastAccess() {
+        return lastAccess;
     }
 
-    public void setLatsAccsess(Date latsAccsess) {
-        this.latsAccsess = latsAccsess;
+    public void setLastAccess(String lastAccess) {
+        this.lastAccess = lastAccess;
     }
 
     public List<Like> getLikes() {
