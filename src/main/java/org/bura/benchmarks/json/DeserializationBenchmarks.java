@@ -85,7 +85,7 @@ public class DeserializationBenchmarks {
     private final ObjectMapper jacksonMapper = new ObjectMapper();
     private TypeReference<?> jacksonType;
 
-    @GenerateMicroBenchmark
+    @Benchmark
     public Object jackson() throws IOException {
         return jacksonMapper.readValue(resource, jacksonType);
     }
@@ -93,7 +93,7 @@ public class DeserializationBenchmarks {
     private final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
     private java.lang.reflect.Type gsonType;
 
-    @GenerateMicroBenchmark
+    @Benchmark
     public Object gson() {
         return gson.fromJson(resource, gsonType);
     }
@@ -101,19 +101,19 @@ public class DeserializationBenchmarks {
     //    private final JsonParser boon = new JsonFastParser();
     private org.boon.json.ObjectMapper mapper = JsonFactory.create();
 
-    @GenerateMicroBenchmark
+    @Benchmark
     public Object boon() {
         return mapper.readValue(resource, List.class, type);
     }
 
     private final JsonSlurper groovy = new JsonSlurper();
 
-    @GenerateMicroBenchmark
+    @Benchmark
     public Object groovy() {
         return groovy.parseText(resource);
     }
 
-    @GenerateMicroBenchmark
+    @Benchmark
     public Object tools() {
         return JsonObject.parse(resource, List.class, type);
     }

@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
-@Fork(value = 1, jvmArgsAppend = { "-Xmx2048m", "-server", "-XX:+AggressiveOpts" })
+@Fork(value = 1, jvmArgsAppend = {"-Xmx2048m", "-server", "-XX:+AggressiveOpts"})
 @Measurement(iterations = 10, time = 3, timeUnit = TimeUnit.SECONDS)
 @Warmup(iterations = 20, time = 3, timeUnit = TimeUnit.SECONDS)
 public class SerializationBenchmarks {
@@ -37,7 +37,7 @@ public class SerializationBenchmarks {
     private static final String DATA_STYLE_POJO = "pojo";
     private static final String DATA_STYLE_MAPLIST = "maplist";
 
-    @Param({ RESOURCE_CITYS, RESOURCE_REPOS, RESOURCE_USER, RESOURCE_REQUEST })
+    @Param({RESOURCE_CITYS, RESOURCE_REPOS, RESOURCE_USER, RESOURCE_REQUEST})
 //    @Param({ RESOURCE_CITYS})
     private String resourceName;
 
@@ -46,7 +46,7 @@ public class SerializationBenchmarks {
     @Setup(Level.Iteration)
     public void setup() throws JsonParseException, JsonMappingException, IOException {
         String resource = Helper.getResource(resourceName + ".json");
-            switch (resourceName) {
+        switch (resourceName) {
             case RESOURCE_CITYS:
                 data = jacksonMapper.readValue(resource, CityInfo[].class);
 
@@ -63,7 +63,7 @@ public class SerializationBenchmarks {
                 data = jacksonMapper.readValue(resource, Request[].class);
 
                 break;
-            }
+        }
     }
 
     private ObjectMapper initMapper() {
@@ -77,36 +77,31 @@ public class SerializationBenchmarks {
 
     private final ObjectMapper jacksonMapper = initMapper();
 
-    @GenerateMicroBenchmark
+    @Benchmark
     public String jackson() throws IOException {
         return jacksonMapper.writeValueAsString(data);
     }
 
     private final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
 
-    @GenerateMicroBenchmark
+    @Benchmark
     public String gson() {
         return gson.toJson(data);
     }
 
     private final JsonSimpleSerializerImpl boon = new JsonSimpleSerializerImpl();
 
-    @GenerateMicroBenchmark
+    @Benchmark
     public String boon() {
         return boon.serialize(data).toString();
     }
 
-    @GenerateMicroBenchmark
+    @Benchmark
     public String tools() {
         return Binder.toJSON(data);
     }
 
-    /*
-     * Workaround for Groovy before 2.3. (http://jira.codehaus.org/browse/GROOVY-6633)
-     */
-    private boolean needCastToMap;
-
-    @GenerateMicroBenchmark
+    @Benchmark
     public String groovy() {
         return JsonOutput.toJson(data);
     }
