@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.wizzardo.tools.json.JsonTools;
 import groovy.json.JsonOutput;
-import org.boon.json.serializers.impl.JsonSimpleSerializerImpl;
+import org.boon.json.JsonFactory;
 import org.bura.benchmarks.json.domain.CityInfo;
 import org.bura.benchmarks.json.domain.Repo;
 import org.bura.benchmarks.json.domain.Request;
@@ -72,7 +72,7 @@ public class SerializationBenchmarks {
 
     private static ObjectMapper initMapper() {
         ObjectMapper m = new ObjectMapper().enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING).disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.US);
         formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
         m.setDateFormat(formatter);
 
@@ -95,8 +95,7 @@ public class SerializationBenchmarks {
 
     @Benchmark
     public String boon() {
-        return new JsonSimpleSerializerImpl().serialize(data).toString();
-//        return boon.serialize(data).toString();
+        return JsonFactory.toJson(data);
     }
 
     @Benchmark

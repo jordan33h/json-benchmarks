@@ -31,11 +31,11 @@ public class DeserializationBenchmarks {
     private static final String RESOURCE_USER = "user";
     private static final String RESOURCE_REQUEST = "request";
 
-    //    @Param({RESOURCE_CITYS, RESOURCE_REPOS, RESOURCE_USER, RESOURCE_REQUEST})
+    @Param({RESOURCE_CITYS, RESOURCE_REPOS, RESOURCE_USER, RESOURCE_REQUEST})
 //    @Param({ RESOURCE_CITYS })
 //    @Param({RESOURCE_REPOS})
 //    @Param({RESOURCE_REQUEST})
-    @Param({RESOURCE_USER})
+//    @Param({RESOURCE_USER})
     private String resourceName;
 
     private String resource;
@@ -113,6 +113,5 @@ public class DeserializationBenchmarks {
     @Benchmark
     public Object tools() {
         return JsonTools.parse(resource, List.class, type);
-//        return JsonObject.parse(resource);
     }
 }
