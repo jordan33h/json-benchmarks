@@ -31,11 +31,11 @@ public class DeserializationBenchmarks {
     private static final String RESOURCE_USER = "user";
     private static final String RESOURCE_REQUEST = "request";
 
-    @Param({RESOURCE_CITYS, RESOURCE_REPOS, RESOURCE_USER, RESOURCE_REQUEST})
+    //    @Param({RESOURCE_CITYS, RESOURCE_REPOS, RESOURCE_USER, RESOURCE_REQUEST})
 //    @Param({ RESOURCE_CITYS })
 //    @Param({RESOURCE_REPOS})
 //    @Param({RESOURCE_REQUEST})
-//    @Param({RESOURCE_USER})
+    @Param({RESOURCE_USER})
     private String resourceName;
 
     private String resource;
@@ -90,7 +90,7 @@ public class DeserializationBenchmarks {
         return jacksonMapper.readValue(resource, jacksonType);
     }
 
-    private final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+    private final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
     private java.lang.reflect.Type gsonType;
 
     @Benchmark
