@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.wizzardo.tools.json.JsonObject;
+import com.wizzardo.tools.json.JsonTools;
 import groovy.json.JsonSlurper;
 import org.boon.json.JsonFactory;
 import org.bura.benchmarks.json.domain.CityInfo;
@@ -98,12 +98,9 @@ public class DeserializationBenchmarks {
         return gson.fromJson(resource, gsonType);
     }
 
-    //    private final JsonParser boon = new JsonFastParser();
-    private org.boon.json.ObjectMapper mapper = JsonFactory.create();
-
     @Benchmark
     public Object boon() {
-        return mapper.readValue(resource, List.class, type);
+        return JsonFactory.create().readValue(resource, List.class, type);
     }
 
     private final JsonSlurper groovy = new JsonSlurper();
@@ -115,6 +112,7 @@ public class DeserializationBenchmarks {
 
     @Benchmark
     public Object tools() {
-        return JsonObject.parse(resource, List.class, type);
+        return JsonTools.parse(resource, List.class, type);
+//        return JsonObject.parse(resource);
     }
 }

@@ -1,5 +1,7 @@
 package org.bura.benchmarks.json.domain;
 
+import java.util.Date;
+
 /**
  * Like data.
  * 
@@ -8,12 +10,12 @@ package org.bura.benchmarks.json.domain;
 public class Like {
 
     private String id;
-    private String date;
+    private Date date;
 
     public Like() {
     }
 
-    public Like(String id, String date) {
+    public Like(String id, Date date) {
         super();
         this.id = id;
         this.date = date;
@@ -27,11 +29,11 @@ public class Like {
         this.id = id;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

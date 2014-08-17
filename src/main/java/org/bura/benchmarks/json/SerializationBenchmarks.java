@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.wizzardo.tools.json.Binder;
+import com.wizzardo.tools.json.JsonTools;
 import groovy.json.JsonOutput;
 import org.boon.json.serializers.impl.JsonSimpleSerializerImpl;
 import org.bura.benchmarks.json.domain.CityInfo;
@@ -38,7 +38,11 @@ public class SerializationBenchmarks {
     private static final String DATA_STYLE_MAPLIST = "maplist";
 
     @Param({RESOURCE_CITYS, RESOURCE_REPOS, RESOURCE_USER, RESOURCE_REQUEST})
+//    @Param({RESOURCE_REPOS, RESOURCE_USER, RESOURCE_REQUEST})
 //    @Param({ RESOURCE_CITYS})
+//    @Param({ RESOURCE_REPOS})
+//    @Param({ RESOURCE_REQUEST})
+//    @Param({ RESOURCE_USER})
     private String resourceName;
 
     private Object data;
@@ -66,7 +70,7 @@ public class SerializationBenchmarks {
         }
     }
 
-    private ObjectMapper initMapper() {
+    private static ObjectMapper initMapper() {
         ObjectMapper m = new ObjectMapper().enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING).disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US);
         formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -89,16 +93,15 @@ public class SerializationBenchmarks {
         return gson.toJson(data);
     }
 
-    private final JsonSimpleSerializerImpl boon = new JsonSimpleSerializerImpl();
-
     @Benchmark
     public String boon() {
-        return boon.serialize(data).toString();
+        return new JsonSimpleSerializerImpl().serialize(data).toString();
+//        return boon.serialize(data).toString();
     }
 
     @Benchmark
     public String tools() {
-        return Binder.toJSON(data);
+        return JsonTools.serialize(data);
     }
 
     @Benchmark
