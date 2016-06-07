@@ -1,20 +1,28 @@
 package org.bura.benchmarks.json;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.wizzardo.tools.json.JsonTools;
 import groovy.json.JsonSlurper;
 import org.boon.json.JsonFactory;
+import org.boon.json.JsonParserFactory;
+import org.boon.json.JsonSerializerFactory;
 import org.bura.benchmarks.json.domain.CityInfo;
 import org.bura.benchmarks.json.domain.Repo;
 import org.bura.benchmarks.json.domain.Request;
 import org.bura.benchmarks.json.domain.UserProfile;
+import org.json.JSONArray;
 import org.openjdk.jmh.annotations.*;
 
+import javax.json.Json;
+import javax.json.JsonReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -22,8 +30,8 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Fork(value = 1, jvmArgsAppend = {"-Xmx2048m", "-server", "-XX:+AggressiveOpts"})
-@Measurement(iterations = 10, time = 3, timeUnit = TimeUnit.SECONDS)
-@Warmup(iterations = 20, time = 3, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 10, time = 2, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 20, time = 2, timeUnit = TimeUnit.SECONDS)
 public class DeserializationBenchmarks {
 
     private static final String RESOURCE_CITYS = "citys";
@@ -52,6 +60,8 @@ public class DeserializationBenchmarks {
                 }.getType();
                 jacksonType = new TypeReference<List<CityInfo>>() {
                 };
+                fastjsonType = new com.alibaba.fastjson.TypeReference<List<CityInfo>>() {
+                };
                 type = CityInfo.class;
                 break;
             }
@@ -59,6 +69,8 @@ public class DeserializationBenchmarks {
                 gsonType = new TypeToken<List<Repo>>() {
                 }.getType();
                 jacksonType = new TypeReference<List<Repo>>() {
+                };
+                fastjsonType = new com.alibaba.fastjson.TypeReference<List<Repo>>() {
                 };
                 type = Repo.class;
                 break;
@@ -68,6 +80,8 @@ public class DeserializationBenchmarks {
                 }.getType();
                 jacksonType = new TypeReference<List<UserProfile>>() {
                 };
+                fastjsonType = new com.alibaba.fastjson.TypeReference<List<UserProfile>>() {
+                };
                 type = UserProfile.class;
                 break;
             }
@@ -76,42 +90,111 @@ public class DeserializationBenchmarks {
                 }.getType();
                 jacksonType = new TypeReference<List<Request>>() {
                 };
+                fastjsonType = new com.alibaba.fastjson.TypeReference<List<Request>>() {
+                };
                 type = Request.class;
                 break;
             }
         }
+
+        jacksonMapperAfterburner = new ObjectMapper();
+        jacksonMapperAfterburner.registerModule(new AfterburnerModule());
     }
 
-    private final ObjectMapper jacksonMapper = new ObjectMapper();
-    private TypeReference<?> jacksonType;
+
+    ObjectMapper jacksonMapperAfterburner;
+    final ObjectMapper jacksonMapper = new ObjectMapper();
+    TypeReference<?> jacksonType;
+    final TypeReference<List> jacksonMapType = new TypeReference<List>() {
+    };
 
     @Benchmark
-    public Object jackson() throws IOException {
+    public Object jackson_pojo() throws IOException {
         return jacksonMapper.readValue(resource, jacksonType);
     }
 
-    private final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
-    private java.lang.reflect.Type gsonType;
+    @Benchmark
+    public Object jackson_afterburner() throws IOException {
+        return jacksonMapperAfterburner.readValue(resource, jacksonType);
+    }
 
     @Benchmark
-    public Object gson() {
+    public Object jackson_map() throws IOException {
+        return jacksonMapper.readValue(resource, jacksonMapType);
+    }
+
+
+    final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
+    java.lang.reflect.Type gsonType;
+    final java.lang.reflect.Type gsonMapType = new TypeToken<List>() {
+    }.getType();
+
+    @Benchmark
+    public Object gson_pojo() {
         return gson.fromJson(resource, gsonType);
     }
 
     @Benchmark
-    public Object boon() {
+    public Object gson_map() {
+        return gson.fromJson(resource, gsonMapType);
+    }
+
+
+    @Benchmark
+    public Object boon_pojo() {
         return JsonFactory.create().readValue(resource, List.class, type);
     }
 
+    @Benchmark
+    public Object boon_map() {
+        return JsonFactory.create(new JsonParserFactory().setCheckDates(false), new JsonSerializerFactory()).fromJson(resource);
+    }
+
+
     private final JsonSlurper groovy = new JsonSlurper();
 
-    @Benchmark
+    //    @Benchmark
     public Object groovy() {
         return groovy.parseText(resource);
     }
 
+
     @Benchmark
-    public Object tools() {
+    public Object tools_pojo() {
         return JsonTools.parse(resource, List.class, type);
     }
+
+    @Benchmark
+    public Object tools_map() {
+        return JsonTools.parse(resource);
+    }
+
+
+    private com.alibaba.fastjson.TypeReference fastjsonType;
+
+    @Benchmark
+    public Object fastjson_pojo() {
+        return JSON.parseObject(resource, fastjsonType);
+    }
+
+    @Benchmark
+    public Object fastjson_map() {
+        return JSON.parseArray(resource);
+    }
+
+
+    @Benchmark
+    public Object json_map() {
+        return new JSONArray(resource);
+    }
+
+
+    @Benchmark
+    public Object javax_glassfish_map() {
+        JsonReader jsonReader = Json.createReader(new StringReader(resource));
+        javax.json.JsonArray object = jsonReader.readArray();
+        jsonReader.close();
+        return object;
+    }
+
 }
