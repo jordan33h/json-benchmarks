@@ -20,7 +20,7 @@ Serialization and deserialization were tested with [POJO](src/main/java/org/bura
 ## Build and Run
 
 ```shell
-./gradlew clean && ./gradlew shadow -DgroovyVersion="2.3.0-rc-2" && java -jar target/benchmarks.jar ".*Benchmarks.*"
+./gradlew clean && ./gradlew shadow && java -jar target/benchmarks.jar ".*Benchmarks.*"
 ```
 
 ## Results
