@@ -65,11 +65,11 @@ SerializationBenchmarks.tools           request  thrpt   10  814572.305 ± 36677
 ![d.repos]
 ![d.cities]
 
-[s.user]: https://cloud.githubusercontent.com/assets/5871626/15852371/edaffab2-2ca0-11e6-87f6-7fcf07802e8f.png
-[s.request]: https://cloud.githubusercontent.com/assets/5871626/15852366/edabde64-2ca0-11e6-938b-1b0d683780f2.png
-[s.repos]: https://cloud.githubusercontent.com/assets/5871626/15852369/edae36a0-2ca0-11e6-8aad-cb03aefd9d4b.png
-[s.cities]: https://cloud.githubusercontent.com/assets/5871626/15852367/edac0862-2ca0-11e6-892d-6edd7cc5db85.png
-[d.user]: https://cloud.githubusercontent.com/assets/5871626/15852370/edae85ba-2ca0-11e6-9fb5-aeb5c5a8774e.png
-[d.request]: https://cloud.githubusercontent.com/assets/5871626/15852368/edacb488-2ca0-11e6-829b-a5d739e8ba99.png
-[d.repos]: https://cloud.githubusercontent.com/assets/5871626/15852372/edc0d22e-2ca0-11e6-89cb-a64d4ef95f6a.png
-[d.cities]: https://cloud.githubusercontent.com/assets/5871626/15852373/edc20a5e-2ca0-11e6-8f28-a931e8eab117.png
+[s.user]: https://cloud.githubusercontent.com/assets/5871626/15876999/5e9c9166-2d11-11e6-83ae-040bd3039d2b.png
+[s.request]: https://cloud.githubusercontent.com/assets/5871626/15876998/5e9b61ce-2d11-11e6-82da-46a52079d40c.png
+[s.repos]: https://cloud.githubusercontent.com/assets/5871626/15877000/5e9d0b46-2d11-11e6-8e57-6738a170d23d.png
+[s.cities]: https://cloud.githubusercontent.com/assets/5871626/15877002/5e9e40a6-2d11-11e6-8d90-b65ff95ccfaa.png
+[d.user]: https://cloud.githubusercontent.com/assets/5871626/15877005/5eba05ca-2d11-11e6-85d6-79f912f3279c.png
+[d.request]: https://cloud.githubusercontent.com/assets/5871626/15877004/5eb4a8f0-2d11-11e6-92eb-c8384039764f.png
+[d.repos]: https://cloud.githubusercontent.com/assets/5871626/15877001/5e9e1ca2-2d11-11e6-87e6-1764f002f817.png
+[d.cities]: https://cloud.githubusercontent.com/assets/5871626/15877003/5ea03032-2d11-11e6-8678-caced33a9ff7.png
