@@ -23,9 +23,20 @@ Serialization and deserialization were tested with [POJO](src/main/java/org/bura
 ./gradlew clean && ./gradlew shadow && java -jar target/benchmarks.jar ".*Benchmarks.*"
 ```
 
-## Results
+## Results ~bigger~ ~number~ ~is~ ~better~
+
+![s.user]
+![s.request]
+![s.repos]
+![s.cities]
+
+![d.user]
+![d.request]
+![d.repos]
+![d.cities]
+
 ```
-Benchmark                        (resourceName)   Mode  Cnt        Score      Error  Units
+Benchmark                                      (resourceName)   Mode  Cnt        Score      Error  Units
 DeserializationBenchmarks.boon_map                      citys  thrpt   10      92.124 ±     2.782  ops/s
 DeserializationBenchmarks.boon_map                      repos  thrpt   10    1510.174 ±   108.628  ops/s
 DeserializationBenchmarks.boon_map                       user  thrpt   10   66459.439 ±  4748.963  ops/s
@@ -80,7 +91,7 @@ DeserializationBenchmarks.tools_pojo                     user  thrpt   10   2208
 DeserializationBenchmarks.tools_pojo                  request  thrpt   10  505424.646 ± 37007.312  ops/s
 
 
-Benchmark                        (resourceName)   Mode  Cnt        Score      Error  Units
+Benchmark                                      (resourceName)   Mode  Cnt        Score      Error  Units
 SerializationBenchmarks.boon_map                        citys  thrpt   10      23.025 ±     0.612  ops/s
 SerializationBenchmarks.boon_map                        repos  thrpt   10     647.350 ±    28.966  ops/s
 SerializationBenchmarks.boon_map                         user  thrpt   10   46674.814 ±  4710.170  ops/s
@@ -134,16 +145,6 @@ SerializationBenchmarks.tools_pojo                      repos  thrpt   10    104
 SerializationBenchmarks.tools_pojo                       user  thrpt   10   29486.289 ±  2576.968  ops/s
 SerializationBenchmarks.tools_pojo                    request  thrpt   10  776922.163 ± 93098.591  ops/s
 ```
-
-![s.user]
-![s.request]
-![s.repos]
-![s.cities]
-
-![d.user]
-![d.request]
-![d.repos]
-![d.cities]
 
 [s.user]: https://cloud.githubusercontent.com/assets/5871626/15876999/5e9c9166-2d11-11e6-83ae-040bd3039d2b.png
 [s.request]: https://cloud.githubusercontent.com/assets/5871626/15876998/5e9b61ce-2d11-11e6-82da-46a52079d40c.png
