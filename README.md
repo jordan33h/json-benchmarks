@@ -15,7 +15,7 @@ For testing were selected data with different structure:
 - **[user.json](src/main/resources/user.json)** - one object with a complex structure. The compact json representation takes about 4.2 kB.
 - **[response.json](src/main/resources/response.json)** - one object with a simple structure. The compact json representation takes about 425 B.
 
-Serialization and deserialization were tested with [POJO](src/main/java/org/bura/benchmarks/json/domain):
+Serialization and deserialization were tested with [POJO](src/main/java/org/bura/benchmarks/json/domain)
 
 ## Build and Run
 
@@ -23,7 +23,8 @@ Serialization and deserialization were tested with [POJO](src/main/java/org/bura
 ./gradlew clean && ./gradlew shadow && java -jar target/benchmarks.jar ".*Benchmarks.*"
 ```
 
-## Results ~bigger~ ~number~ ~is~ ~better~
+## Results
+bigger number is better
 
 ![s.user]
 ![s.request]
