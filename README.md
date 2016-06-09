@@ -15,7 +15,7 @@ For testing were selected data with different structure:
 - **[user.json](src/main/resources/user.json)** - one object with a complex structure. The compact json representation takes about 4.2 kB.
 - **[response.json](src/main/resources/response.json)** - one object with a simple structure. The compact json representation takes about 425 B.
 
-Serialization and deserialization were tested with [POJO](src/main/java/org/bura/benchmarks/json/domain):
+Serialization and deserialization were tested with [POJO](src/main/java/org/bura/benchmarks/json/domain)
 
 ## Build and Run
 
@@ -24,36 +24,7 @@ Serialization and deserialization were tested with [POJO](src/main/java/org/bura
 ```
 
 ## Results
-```
-Benchmark                        (resourceName)   Mode  Cnt        Score      Error  Units
-DeserializationBenchmarks.gson              citys  thrpt   10      28.201 ±     0.833  ops/s
-DeserializationBenchmarks.gson              repos  thrpt   10     454.902 ±    34.062  ops/s
-DeserializationBenchmarks.gson               user  thrpt   10    7506.928 ±   377.153  ops/s
-DeserializationBenchmarks.gson            request  thrpt   10  318983.389 ± 12859.417  ops/s
-DeserializationBenchmarks.jackson           citys  thrpt   10      34.983 ±     1.464  ops/s
-DeserializationBenchmarks.jackson           repos  thrpt   10     493.302 ±    30.280  ops/s
-DeserializationBenchmarks.jackson            user  thrpt   10    8291.480 ±   681.102  ops/s
-DeserializationBenchmarks.jackson         request  thrpt   10  402340.314 ± 26640.525  ops/s
-DeserializationBenchmarks.tools             citys  thrpt   10      61.449 ±     1.902  ops/s
-DeserializationBenchmarks.tools             repos  thrpt   10     934.867 ±    59.520  ops/s
-DeserializationBenchmarks.tools              user  thrpt   10   21561.766 ±  2373.121  ops/s
-DeserializationBenchmarks.tools           request  thrpt   10  501078.404 ± 48615.667  ops/s
-
-
-Benchmark                        (resourceName)   Mode  Cnt        Score      Error  Units
-SerializationBenchmarks.gson              citys  thrpt   10      20.528 ±     0.702  ops/s
-SerializationBenchmarks.gson              repos  thrpt   10     440.081 ±    17.025  ops/s
-SerializationBenchmarks.gson               user  thrpt   10   12621.542 ±   468.992  ops/s
-SerializationBenchmarks.gson            request  thrpt   10  243215.893 ± 23153.946  ops/s
-SerializationBenchmarks.jackson           citys  thrpt   10      37.679 ±     1.611  ops/s
-SerializationBenchmarks.jackson           repos  thrpt   10     619.034 ±    50.490  ops/s
-SerializationBenchmarks.jackson            user  thrpt   10   19754.257 ±  1554.809  ops/s
-SerializationBenchmarks.jackson         request  thrpt   10  720663.570 ± 32423.289  ops/s
-SerializationBenchmarks.tools             citys  thrpt   10      43.276 ±     1.575  ops/s
-SerializationBenchmarks.tools             repos  thrpt   10    1001.276 ±    77.295  ops/s
-SerializationBenchmarks.tools              user  thrpt   10   29063.444 ±  1953.410  ops/s
-SerializationBenchmarks.tools           request  thrpt   10  814572.305 ± 36677.162  ops/s
-```
+bigger number is better
 
 ![s.user]
 ![s.request]
@@ -65,11 +36,122 @@ SerializationBenchmarks.tools           request  thrpt   10  814572.305 ± 36677
 ![d.repos]
 ![d.cities]
 
-[s.user]: https://cloud.githubusercontent.com/assets/5871626/15852371/edaffab2-2ca0-11e6-87f6-7fcf07802e8f.png
-[s.request]: https://cloud.githubusercontent.com/assets/5871626/15852366/edabde64-2ca0-11e6-938b-1b0d683780f2.png
-[s.repos]: https://cloud.githubusercontent.com/assets/5871626/15852369/edae36a0-2ca0-11e6-8aad-cb03aefd9d4b.png
-[s.cities]: https://cloud.githubusercontent.com/assets/5871626/15852367/edac0862-2ca0-11e6-892d-6edd7cc5db85.png
-[d.user]: https://cloud.githubusercontent.com/assets/5871626/15852370/edae85ba-2ca0-11e6-9fb5-aeb5c5a8774e.png
-[d.request]: https://cloud.githubusercontent.com/assets/5871626/15852368/edacb488-2ca0-11e6-829b-a5d739e8ba99.png
-[d.repos]: https://cloud.githubusercontent.com/assets/5871626/15852372/edc0d22e-2ca0-11e6-89cb-a64d4ef95f6a.png
-[d.cities]: https://cloud.githubusercontent.com/assets/5871626/15852373/edc20a5e-2ca0-11e6-8f28-a931e8eab117.png
+```
+Benchmark                                      (resourceName)   Mode  Cnt        Score      Error  Units
+DeserializationBenchmarks.boon_map                      citys  thrpt   10      92.124 ±     2.782  ops/s
+DeserializationBenchmarks.boon_map                      repos  thrpt   10    1510.174 ±   108.628  ops/s
+DeserializationBenchmarks.boon_map                       user  thrpt   10   66459.439 ±  4748.963  ops/s
+DeserializationBenchmarks.boon_map                    request  thrpt   10  241819.009 ± 19403.229  ops/s
+DeserializationBenchmarks.boon_pojo                     citys  thrpt   10      32.815 ±     0.670  ops/s
+DeserializationBenchmarks.boon_pojo                     repos  thrpt   10     649.059 ±    38.529  ops/s
+DeserializationBenchmarks.boon_pojo                      user  thrpt   10   12534.207 ±   999.826  ops/s
+DeserializationBenchmarks.boon_pojo                   request  thrpt   10  154424.298 ± 13356.475  ops/s
+DeserializationBenchmarks.fastjson_map                  citys  thrpt   10      36.267 ±     1.665  ops/s
+DeserializationBenchmarks.fastjson_map                  repos  thrpt   10     732.092 ±    41.807  ops/s
+DeserializationBenchmarks.fastjson_map                   user  thrpt   10   37766.821 ±  1768.354  ops/s
+DeserializationBenchmarks.fastjson_map                request  thrpt   10  443414.072 ± 55618.553  ops/s
+DeserializationBenchmarks.fastjson_pojo                 citys  thrpt   10      35.373 ±     1.348  ops/s
+DeserializationBenchmarks.fastjson_pojo                 repos  thrpt   10     307.859 ±    22.505  ops/s
+DeserializationBenchmarks.fastjson_pojo                  user  thrpt   10   16065.814 ±   707.714  ops/s
+DeserializationBenchmarks.fastjson_pojo               request  thrpt   10  373858.829 ± 28763.854  ops/s
+DeserializationBenchmarks.gson_map                      citys  thrpt   10      28.619 ±     0.819  ops/s
+DeserializationBenchmarks.gson_map                      repos  thrpt   10     426.238 ±    24.049  ops/s
+DeserializationBenchmarks.gson_map                       user  thrpt   10   19249.799 ±  2020.379  ops/s
+DeserializationBenchmarks.gson_map                    request  thrpt   10  356233.603 ± 34938.526  ops/s
+DeserializationBenchmarks.gson_pojo                     citys  thrpt   10      27.754 ±     1.040  ops/s
+DeserializationBenchmarks.gson_pojo                     repos  thrpt   10     446.110 ±    34.616  ops/s
+DeserializationBenchmarks.gson_pojo                      user  thrpt   10    6850.039 ±   303.603  ops/s
+DeserializationBenchmarks.gson_pojo                   request  thrpt   10  311209.274 ± 27088.052  ops/s
+DeserializationBenchmarks.jackson_afterburner           citys  thrpt   10      40.077 ±     2.604  ops/s
+DeserializationBenchmarks.jackson_afterburner           repos  thrpt   10     561.113 ±    38.615  ops/s
+DeserializationBenchmarks.jackson_afterburner            user  thrpt   10    8461.624 ±  1018.068  ops/s
+DeserializationBenchmarks.jackson_afterburner         request  thrpt   10  418928.329 ± 20651.874  ops/s
+DeserializationBenchmarks.jackson_map                   citys  thrpt   10      35.831 ±     1.508  ops/s
+DeserializationBenchmarks.jackson_map                   repos  thrpt   10     737.106 ±    48.443  ops/s
+DeserializationBenchmarks.jackson_map                    user  thrpt   10   37015.024 ±  3382.449  ops/s
+DeserializationBenchmarks.jackson_map                 request  thrpt   10  437505.666 ± 47528.644  ops/s
+DeserializationBenchmarks.jackson_pojo                  citys  thrpt   10      36.939 ±     1.230  ops/s
+DeserializationBenchmarks.jackson_pojo                  repos  thrpt   10     498.170 ±    40.602  ops/s
+DeserializationBenchmarks.jackson_pojo                   user  thrpt   10    8283.572 ±   882.760  ops/s
+DeserializationBenchmarks.jackson_pojo                request  thrpt   10  405656.272 ± 31775.924  ops/s
+DeserializationBenchmarks.javax_glassfish_map           citys  thrpt   10      33.221 ±     1.533  ops/s
+DeserializationBenchmarks.javax_glassfish_map           repos  thrpt   10     669.010 ±    31.989  ops/s
+DeserializationBenchmarks.javax_glassfish_map            user  thrpt   10   23322.000 ±  2182.826  ops/s
+DeserializationBenchmarks.javax_glassfish_map         request  thrpt   10  111137.212 ±  8751.833  ops/s
+DeserializationBenchmarks.json_map                      citys  thrpt   10      17.481 ±     0.667  ops/s
+DeserializationBenchmarks.json_map                      repos  thrpt   10     210.346 ±    13.448  ops/s
+DeserializationBenchmarks.json_map                       user  thrpt   10   14346.811 ±  1740.396  ops/s
+DeserializationBenchmarks.json_map                    request  thrpt   10  159923.569 ± 12216.073  ops/s
+DeserializationBenchmarks.tools_map                     citys  thrpt   10      57.553 ±     2.749  ops/s
+DeserializationBenchmarks.tools_map                     repos  thrpt   10    1125.499 ±    31.880  ops/s
+DeserializationBenchmarks.tools_map                      user  thrpt   10   49184.286 ±  4184.566  ops/s
+DeserializationBenchmarks.tools_map                   request  thrpt   10  691936.284 ± 72730.885  ops/s
+DeserializationBenchmarks.tools_pojo                    citys  thrpt   10      62.132 ±     3.411  ops/s
+DeserializationBenchmarks.tools_pojo                    repos  thrpt   10     966.364 ±    62.248  ops/s
+DeserializationBenchmarks.tools_pojo                     user  thrpt   10   22088.584 ±  1861.338  ops/s
+DeserializationBenchmarks.tools_pojo                  request  thrpt   10  505424.646 ± 37007.312  ops/s
+
+
+Benchmark                                      (resourceName)   Mode  Cnt        Score      Error  Units
+SerializationBenchmarks.boon_map                        citys  thrpt   10      23.025 ±     0.612  ops/s
+SerializationBenchmarks.boon_map                        repos  thrpt   10     647.350 ±    28.966  ops/s
+SerializationBenchmarks.boon_map                         user  thrpt   10   46674.814 ±  4710.170  ops/s
+SerializationBenchmarks.boon_map                      request  thrpt   10  310101.661 ± 37717.120  ops/s
+SerializationBenchmarks.boon_pojo                       citys  thrpt   10      24.132 ±     0.924  ops/s
+SerializationBenchmarks.boon_pojo                       repos  thrpt   10     572.035 ±    33.325  ops/s
+SerializationBenchmarks.boon_pojo                        user  thrpt   10    8475.366 ±   390.940  ops/s
+SerializationBenchmarks.boon_pojo                     request  thrpt   10  258892.974 ± 25900.712  ops/s
+SerializationBenchmarks.fastjson_map                    citys  thrpt   10      18.090 ±     0.828  ops/s
+SerializationBenchmarks.fastjson_map                    repos  thrpt   10     618.079 ±    46.532  ops/s
+SerializationBenchmarks.fastjson_map                     user  thrpt   10   40905.332 ±  3432.967  ops/s
+SerializationBenchmarks.fastjson_map                  request  thrpt   10  703366.778 ± 43934.711  ops/s
+SerializationBenchmarks.fastjson_pojo                   citys  thrpt   10      25.836 ±     1.226  ops/s
+SerializationBenchmarks.fastjson_pojo                   repos  thrpt   10     586.694 ±    43.187  ops/s
+SerializationBenchmarks.fastjson_pojo                    user  thrpt   10   10794.952 ±  1039.016  ops/s
+SerializationBenchmarks.fastjson_pojo                 request  thrpt   10  738175.401 ± 81939.044  ops/s
+SerializationBenchmarks.gson_map                        citys  thrpt   10      17.614 ±     0.741  ops/s
+SerializationBenchmarks.gson_map                        repos  thrpt   10     554.489 ±    36.948  ops/s
+SerializationBenchmarks.gson_map                         user  thrpt   10   23679.734 ±  2186.142  ops/s
+SerializationBenchmarks.gson_map                      request  thrpt   10  280437.014 ± 22409.739  ops/s
+SerializationBenchmarks.gson_pojo                       citys  thrpt   10      18.457 ±     0.923  ops/s
+SerializationBenchmarks.gson_pojo                       repos  thrpt   10     471.067 ±    27.285  ops/s
+SerializationBenchmarks.gson_pojo                        user  thrpt   10   12002.206 ±  1183.890  ops/s
+SerializationBenchmarks.gson_pojo                     request  thrpt   10  242472.037 ± 20113.190  ops/s
+SerializationBenchmarks.jackson_afterburner             citys  thrpt   10      38.346 ±     1.719  ops/s
+SerializationBenchmarks.jackson_afterburner             repos  thrpt   10     798.438 ±    40.475  ops/s
+SerializationBenchmarks.jackson_afterburner              user  thrpt   10   21071.424 ±  1644.512  ops/s
+SerializationBenchmarks.jackson_afterburner           request  thrpt   10  747770.066 ± 63465.452  ops/s
+SerializationBenchmarks.jackson_map                     citys  thrpt   10      30.194 ±     1.370  ops/s
+SerializationBenchmarks.jackson_map                     repos  thrpt   10     723.721 ±    44.091  ops/s
+SerializationBenchmarks.jackson_map                      user  thrpt   10   66160.116 ±  5334.092  ops/s
+SerializationBenchmarks.jackson_map                   request  thrpt   10  727394.197 ± 91712.438  ops/s
+SerializationBenchmarks.jackson_pojo                    citys  thrpt   10      34.718 ±     1.553  ops/s
+SerializationBenchmarks.jackson_pojo                    repos  thrpt   10     656.510 ±    30.895  ops/s
+SerializationBenchmarks.jackson_pojo                     user  thrpt   10   19139.824 ±  1838.763  ops/s
+SerializationBenchmarks.jackson_pojo                  request  thrpt   10  703588.987 ± 60259.509  ops/s
+SerializationBenchmarks.javax_glassfish_map             citys  thrpt   10      30.175 ±     2.294  ops/s
+SerializationBenchmarks.javax_glassfish_map             repos  thrpt   10     608.041 ±    32.070  ops/s
+SerializationBenchmarks.javax_glassfish_map              user  thrpt   10   33351.198 ±  2797.027  ops/s
+SerializationBenchmarks.javax_glassfish_map           request  thrpt   10  132750.136 ± 11294.732  ops/s
+SerializationBenchmarks.json_map                        citys  thrpt   10      14.873 ±     0.327  ops/s
+SerializationBenchmarks.json_map                        repos  thrpt   10     222.693 ±    15.509  ops/s
+SerializationBenchmarks.json_map                         user  thrpt   10   15868.007 ±  1355.026  ops/s
+SerializationBenchmarks.json_map                      request  thrpt   10  173788.409 ±  8995.319  ops/s
+SerializationBenchmarks.tools_map                       citys  thrpt   10      29.770 ±     1.329  ops/s
+SerializationBenchmarks.tools_map                       repos  thrpt   10     944.926 ±    69.908  ops/s
+SerializationBenchmarks.tools_map                        user  thrpt   10   58322.506 ±  4014.109  ops/s
+SerializationBenchmarks.tools_map                     request  thrpt   10  761050.359 ± 66753.758  ops/s
+SerializationBenchmarks.tools_pojo                      citys  thrpt   10      39.769 ±     1.231  ops/s
+SerializationBenchmarks.tools_pojo                      repos  thrpt   10    1048.896 ±    93.552  ops/s
+SerializationBenchmarks.tools_pojo                       user  thrpt   10   29486.289 ±  2576.968  ops/s
+SerializationBenchmarks.tools_pojo                    request  thrpt   10  776922.163 ± 93098.591  ops/s
+```
+
+[s.user]: https://cloud.githubusercontent.com/assets/5871626/15876999/5e9c9166-2d11-11e6-83ae-040bd3039d2b.png
+[s.request]: https://cloud.githubusercontent.com/assets/5871626/15876998/5e9b61ce-2d11-11e6-82da-46a52079d40c.png
+[s.repos]: https://cloud.githubusercontent.com/assets/5871626/15877000/5e9d0b46-2d11-11e6-8e57-6738a170d23d.png
+[s.cities]: https://cloud.githubusercontent.com/assets/5871626/15877002/5e9e40a6-2d11-11e6-8d90-b65ff95ccfaa.png
+[d.user]: https://cloud.githubusercontent.com/assets/5871626/15877005/5eba05ca-2d11-11e6-85d6-79f912f3279c.png
+[d.request]: https://cloud.githubusercontent.com/assets/5871626/15877004/5eb4a8f0-2d11-11e6-92eb-c8384039764f.png
+[d.repos]: https://cloud.githubusercontent.com/assets/5871626/15877001/5e9e1ca2-2d11-11e6-87e6-1764f002f817.png
+[d.cities]: https://cloud.githubusercontent.com/assets/5871626/15877003/5ea03032-2d11-11e6-8678-caced33a9ff7.png
