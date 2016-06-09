@@ -3,10 +3,14 @@ package org.bura.benchmarks.json;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.owlike.genson.GenericType;
+import com.owlike.genson.Genson;
+import com.owlike.genson.GensonBuilder;
 import com.wizzardo.tools.json.JsonTools;
 import groovy.json.JsonSlurper;
 import org.boon.json.JsonFactory;
@@ -62,6 +66,8 @@ public class DeserializationBenchmarks {
                 };
                 fastjsonType = new com.alibaba.fastjson.TypeReference<List<CityInfo>>() {
                 };
+                gensonType = new GenericType<List<CityInfo>>() {
+                };
                 type = CityInfo.class;
                 break;
             }
@@ -71,6 +77,8 @@ public class DeserializationBenchmarks {
                 jacksonType = new TypeReference<List<Repo>>() {
                 };
                 fastjsonType = new com.alibaba.fastjson.TypeReference<List<Repo>>() {
+                };
+                gensonType = new GenericType<List<Repo>>() {
                 };
                 type = Repo.class;
                 break;
@@ -82,6 +90,8 @@ public class DeserializationBenchmarks {
                 };
                 fastjsonType = new com.alibaba.fastjson.TypeReference<List<UserProfile>>() {
                 };
+                gensonType = new GenericType<List<UserProfile>>() {
+                };
                 type = UserProfile.class;
                 break;
             }
@@ -91,6 +101,8 @@ public class DeserializationBenchmarks {
                 jacksonType = new TypeReference<List<Request>>() {
                 };
                 fastjsonType = new com.alibaba.fastjson.TypeReference<List<Request>>() {
+                };
+                gensonType = new GenericType<List<Request>>() {
                 };
                 type = Request.class;
                 break;
@@ -109,17 +121,17 @@ public class DeserializationBenchmarks {
     };
 
     @Benchmark
-    public Object jackson_pojo() throws IOException {
+    public Object pojo_jackson() throws IOException {
         return jacksonMapper.readValue(resource, jacksonType);
     }
 
     @Benchmark
-    public Object jackson_afterburner() throws IOException {
+    public Object pojo_jackson_afterburner() throws IOException {
         return jacksonMapperAfterburner.readValue(resource, jacksonType);
     }
 
     @Benchmark
-    public Object jackson_map() throws IOException {
+    public Object map_jackson() throws IOException {
         return jacksonMapper.readValue(resource, jacksonMapType);
     }
 
@@ -130,23 +142,23 @@ public class DeserializationBenchmarks {
     }.getType();
 
     @Benchmark
-    public Object gson_pojo() {
+    public Object pojo_gson() {
         return gson.fromJson(resource, gsonType);
     }
 
     @Benchmark
-    public Object gson_map() {
+    public Object map_gson() {
         return gson.fromJson(resource, gsonMapType);
     }
 
 
     @Benchmark
-    public Object boon_pojo() {
+    public Object pojo_boon() {
         return JsonFactory.create().readValue(resource, List.class, type);
     }
 
     @Benchmark
-    public Object boon_map() {
+    public Object map_boon() {
         return JsonFactory.create(new JsonParserFactory().setCheckDates(false), new JsonSerializerFactory()).fromJson(resource);
     }
 
@@ -160,12 +172,12 @@ public class DeserializationBenchmarks {
 
 
     @Benchmark
-    public Object tools_pojo() {
+    public Object pojo_tools() {
         return JsonTools.parse(resource, List.class, type);
     }
 
     @Benchmark
-    public Object tools_map() {
+    public Object map_tools() {
         return JsonTools.parse(resource);
     }
 
@@ -173,28 +185,49 @@ public class DeserializationBenchmarks {
     private com.alibaba.fastjson.TypeReference fastjsonType;
 
     @Benchmark
-    public Object fastjson_pojo() {
+    public Object pojo_fastjson() {
         return JSON.parseObject(resource, fastjsonType);
     }
 
     @Benchmark
-    public Object fastjson_map() {
+    public Object map_fastjson() {
         return JSON.parseArray(resource);
     }
 
 
     @Benchmark
-    public Object json_map() {
+    public Object map_json_org() {
         return new JSONArray(resource);
     }
 
 
     @Benchmark
-    public Object javax_glassfish_map() {
+    public Object map_javax_glassfish() {
         JsonReader jsonReader = Json.createReader(new StringReader(resource));
         javax.json.JsonArray object = jsonReader.readArray();
         jsonReader.close();
         return object;
     }
 
+
+    Genson genson = new GensonBuilder()
+            .useDateFormat(new ISO8601DateFormat())
+            .create();
+    GenericType gensonType;
+
+    @Benchmark
+    public Object pojo_genson() {
+        return genson.deserialize(resource, gensonType);
+    }
+
+    @Benchmark
+    public Object map_genson() {
+        return genson.deserialize(resource, Object.class);
+    }
+
+
+    @Benchmark
+    public Object map_mjson() {
+        return mjson.Json.read(resource);
+    }
 }

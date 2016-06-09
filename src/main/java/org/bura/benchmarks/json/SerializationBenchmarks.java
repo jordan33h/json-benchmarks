@@ -6,9 +6,12 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.owlike.genson.Genson;
+import com.owlike.genson.GensonBuilder;
 import com.wizzardo.tools.json.JsonTools;
 import groovy.json.JsonOutput;
 import org.boon.json.JsonFactory;
@@ -25,6 +28,7 @@ import javax.json.JsonWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
@@ -89,8 +93,8 @@ public class SerializationBenchmarks {
     }
 
     private static ObjectMapper initMapper(boolean afterburner) {
-        ObjectMapper m = new ObjectMapper().enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING).disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.US);
+        ObjectMapper m = new ObjectMapper().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        DateFormat formatter = new ISO8601DateFormat();
         formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
         m.setDateFormat(formatter);
         if (afterburner)
@@ -103,17 +107,17 @@ public class SerializationBenchmarks {
     private final ObjectMapper jacksonMapperAfterburner = initMapper(true);
 
     @Benchmark
-    public String jackson_pojo() throws IOException {
+    public String pojo_jackson() throws IOException {
         return jacksonMapper.writeValueAsString(data_pojo);
     }
 
     @Benchmark
-    public String jackson_afterburner() throws IOException {
+    public String pojo_jackson_afterburner() throws IOException {
         return jacksonMapperAfterburner.writeValueAsString(data_pojo);
     }
 
     @Benchmark
-    public String jackson_map() throws IOException {
+    public String map_jackson() throws IOException {
         return jacksonMapper.writeValueAsString(data_map);
     }
 
@@ -121,61 +125,83 @@ public class SerializationBenchmarks {
     private final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
 
     @Benchmark
-    public String gson_pojo() {
+    public String pojo_gson() {
         return gson.toJson(data_pojo);
     }
 
     @Benchmark
-    public String gson_map() {
+    public String map_gson() {
         return gson.toJson(data_map);
     }
 
 
     @Benchmark
-    public String boon_pojo() {
+    public String pojo_boon() {
         return JsonFactory.createUseJSONDates().toJson(data_pojo);
     }
 
     @Benchmark
-    public String boon_map() {
+    public String map_boon() {
         return JsonFactory.createUseJSONDates().toJson(data_map);
     }
 
 
     @Benchmark
-    public String tools_pojo() {
+    public String pojo_tools() {
         return JsonTools.serialize(data_pojo);
     }
 
     @Benchmark
-    public String tools_map() {
+    public String map_tools() {
         return JsonTools.serialize(data_map);
     }
 
 
     @Benchmark
-    public String fastjson_pojo() {
+    public String pojo_fastjson() {
         return JSON.toJSONString(data_pojo, SerializerFeature.UseISO8601DateFormat);
     }
 
     @Benchmark
-    public String fastjson_map() {
+    public String map_fastjson() {
         return JSON.toJSONString(data_map, SerializerFeature.UseISO8601DateFormat);
     }
 
 
     @Benchmark
-    public String json_map() {
+    public String map_json() {
         return jsonArray.toString();
     }
 
 
     @Benchmark
-    public Object javax_glassfish_map() {
+    public Object map_javax_glassfish() {
         StringWriter stringWriter = new StringWriter();
         JsonWriter writer = Json.createWriter(stringWriter);
         writer.write(javaxJsonArray);
         return stringWriter.toString();
+    }
+
+
+    Genson genson = new GensonBuilder()
+            .useDateAsTimestamp(false)
+            .useDateFormat(new ISO8601DateFormat())
+            .create();
+
+    @Benchmark
+    public Object pojo_genson() {
+        return genson.serialize(data_pojo);
+    }
+
+    @Benchmark
+    public Object map_genson() {
+        return genson.serialize(data_map);
+    }
+
+
+    @Benchmark
+    public Object map_mjson() {
+        return mjson.Json.make(data_map).toString();
     }
 
 
