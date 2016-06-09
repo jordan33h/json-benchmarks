@@ -30,7 +30,7 @@ public class UserProfile {
     private Date lastAccess;
     private List<Like> likes;
 
-    private UserProfile(){
+    public UserProfile(){
     }
 
     public UserProfile(String id, Long profileViews, String email, UserNames name, Integer gender, String birthday, List<Location> locations, String image, String cover,

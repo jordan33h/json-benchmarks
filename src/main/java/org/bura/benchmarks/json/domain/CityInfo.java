@@ -13,12 +13,12 @@ public class CityInfo {
     private String city;
     private String state;
     private Integer pop;
-    private List<Float> loc;
+    private List<Double> loc;
 
     public CityInfo() {
     }
 
-    public CityInfo(String id, String city, String state, Integer pop, List<Float> loc) {
+    public CityInfo(String id, String city, String state, Integer pop, List<Double> loc) {
         this.id = id;
         this.city = city;
         this.state = state;
@@ -73,11 +73,11 @@ public class CityInfo {
     /**
      *  The city location. Specified as latitude and longitude pair.
      */
-    public List<Float> getLoc() {
+    public List<Double> getLoc() {
         return loc;
     }
 
-    public void setLoc(List<Float> loc) {
+    public void setLoc(List<Double> loc) {
         this.loc = loc;
     }
 
