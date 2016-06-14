@@ -9,7 +9,7 @@ Participants:
 - [Genson](https://owlike.github.io/genson/)
 - [Gson](https://code.google.com/p/google-gson/)
 - [Jackson](http://wiki.fasterxml.com/JacksonRelease20)
-- [Jacjson-afterburner](https://github.com/FasterXML/jackson-module-afterburner)
+- [Jackson-afterburner](https://github.com/FasterXML/jackson-module-afterburner)
 - [JSR 353 Glassfish](https://json-processing-spec.java.net/)
 - [json.org](https://github.com/stleary/JSON-java)
 - [Mjson](https://bolerio.github.io/mjson/)
