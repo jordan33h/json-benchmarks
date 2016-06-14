@@ -147,11 +147,11 @@ SerializationBenchmarks.tools_pojo                       user  thrpt   10   2948
 SerializationBenchmarks.tools_pojo                    request  thrpt   10  776922.163 ± 93098.591  ops/s
 ```
 
-[s.user]: https://cloud.githubusercontent.com/assets/5871626/15876999/5e9c9166-2d11-11e6-83ae-040bd3039d2b.png
-[s.request]: https://cloud.githubusercontent.com/assets/5871626/15876998/5e9b61ce-2d11-11e6-82da-46a52079d40c.png
-[s.repos]: https://cloud.githubusercontent.com/assets/5871626/15877000/5e9d0b46-2d11-11e6-8e57-6738a170d23d.png
-[s.cities]: https://cloud.githubusercontent.com/assets/5871626/15877002/5e9e40a6-2d11-11e6-8d90-b65ff95ccfaa.png
-[d.user]: https://cloud.githubusercontent.com/assets/5871626/15877005/5eba05ca-2d11-11e6-85d6-79f912f3279c.png
-[d.request]: https://cloud.githubusercontent.com/assets/5871626/15877004/5eb4a8f0-2d11-11e6-92eb-c8384039764f.png
-[d.repos]: https://cloud.githubusercontent.com/assets/5871626/15877001/5e9e1ca2-2d11-11e6-87e6-1764f002f817.png
-[d.cities]: https://cloud.githubusercontent.com/assets/5871626/15877003/5ea03032-2d11-11e6-8678-caced33a9ff7.png
+[s.user]: https://cloud.githubusercontent.com/assets/5871626/16057025/54b4aa64-3278-11e6-8153-2980d2531ba8.png
+[s.request]: https://cloud.githubusercontent.com/assets/5871626/16057021/54b1e338-3278-11e6-976d-119e96b20c4d.png
+[s.repos]: https://cloud.githubusercontent.com/assets/5871626/16057024/54b3ff06-3278-11e6-8440-ae6123d3af61.png
+[s.cities]: https://cloud.githubusercontent.com/assets/5871626/16057022/54b34eee-3278-11e6-8741-3c6dcf92cf06.png
+[d.user]: https://cloud.githubusercontent.com/assets/5871626/16057026/54b6568e-3278-11e6-83ef-5475fa7ced08.png
+[d.request]: https://cloud.githubusercontent.com/assets/5871626/16057023/54b3e548-3278-11e6-8335-0b2199ea0311.png
+[d.repos]: https://cloud.githubusercontent.com/assets/5871626/16057027/54ce5f40-3278-11e6-9552-2aaa9e4926ad.png
+[d.cities]: https://cloud.githubusercontent.com/assets/5871626/16057028/54cf713c-3278-11e6-88d6-ef1c36558f05.png
