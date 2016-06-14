@@ -178,6 +178,30 @@ SerializationBenchmarks.pojo_tools                            user  thrpt   10  
 SerializationBenchmarks.pojo_tools                         request  thrpt   10  781003.659 ± 50283.011  ops/s
 ```
 
+
+## Checking performance of Boon
+
+Very different results for boon deserialization into maps and pojos looked suspicious for me, so I've made another benchmark:
+'deserialize into map' vs 'deserialize into map and get value of one field'
+and compared it with Tools and pojos.
+
+As I expected, Boon uses lazy maps and creates actual values only when requested
+
+![db.user]
+
+```
+Benchmark                                           (resourceName)   Mode  Cnt        Score      Error  Units
+DeserializationBoonBenchmarks.boon_map                         N/A  thrpt   10   55077.902 ±  5961.883  ops/s
+DeserializationBoonBenchmarks.boon_map_get                     N/A  thrpt   10   34628.234 ±  3174.817  ops/s
+DeserializationBoonBenchmarks.boon_pojo                        N/A  thrpt   10   12505.795 ±   978.565  ops/s
+DeserializationBoonBenchmarks.boon_pojo_get                    N/A  thrpt   10   12790.642 ±  1190.044  ops/s
+DeserializationBoonBenchmarks.tools_map                        N/A  thrpt   10   50498.789 ±  2881.635  ops/s
+DeserializationBoonBenchmarks.tools_map_get                    N/A  thrpt   10   50768.987 ±  4822.122  ops/s
+DeserializationBoonBenchmarks.tools_pojo                       N/A  thrpt   10   20414.710 ±  2084.168  ops/s
+DeserializationBoonBenchmarks.tools_pojo_get                   N/A  thrpt   10   20677.948 ±  2052.673  ops/s
+```
+
+
 [s.user]: https://cloud.githubusercontent.com/assets/5871626/16057025/54b4aa64-3278-11e6-8153-2980d2531ba8.png
 [s.request]: https://cloud.githubusercontent.com/assets/5871626/16057021/54b1e338-3278-11e6-976d-119e96b20c4d.png
 [s.repos]: https://cloud.githubusercontent.com/assets/5871626/16057024/54b3ff06-3278-11e6-8440-ae6123d3af61.png
@@ -186,3 +210,4 @@ SerializationBenchmarks.pojo_tools                         request  thrpt   10  
 [d.request]: https://cloud.githubusercontent.com/assets/5871626/16057023/54b3e548-3278-11e6-8335-0b2199ea0311.png
 [d.repos]: https://cloud.githubusercontent.com/assets/5871626/16057027/54ce5f40-3278-11e6-9552-2aaa9e4926ad.png
 [d.cities]: https://cloud.githubusercontent.com/assets/5871626/16057028/54cf713c-3278-11e6-88d6-ef1c36558f05.png
+[db.user]: https://cloud.githubusercontent.com/assets/5871626/16058108/19c31f4e-327d-11e6-82d2-1fc978006ac1.png
