@@ -4,8 +4,15 @@
 
 Participants:
 
-- [Jackson](http://wiki.fasterxml.com/JacksonRelease20)
+- [Boon](https://github.com/boonproject/boon)
+- [Fastjson](https://github.com/alibaba/fastjson)
+- [Genson](https://owlike.github.io/genson/)
 - [Gson](https://code.google.com/p/google-gson/)
+- [Jackson](http://wiki.fasterxml.com/JacksonRelease20)
+- [Jacjson-afterburner](https://github.com/FasterXML/jackson-module-afterburner)
+- [JSR 353 Glassfish](https://json-processing-spec.java.net/)
+- [json.org](https://github.com/stleary/JSON-java)
+- [Mjson](https://bolerio.github.io/mjson/)
 - [Tools](https://github.com/wizzardo/Tools)
 
 For testing were selected data with different structure:
