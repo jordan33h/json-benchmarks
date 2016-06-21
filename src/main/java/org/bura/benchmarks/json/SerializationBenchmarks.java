@@ -13,6 +13,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.owlike.genson.Genson;
 import com.owlike.genson.GensonBuilder;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+import com.squareup.moshi.Rfc3339DateJsonAdapter;
 import com.wizzardo.tools.json.JsonTools;
 import groovy.json.JsonOutput;
 import org.boon.json.JsonFactory;
@@ -30,9 +33,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -65,24 +67,35 @@ public class SerializationBenchmarks {
     JSONArray jsonArray;
     javax.json.JsonArray javaxJsonArray;
     JsonValue minimalJson;
+    JsonAdapter moshiAdapter;
 
     @Setup(Level.Iteration)
     public void setup() throws JsonParseException, JsonMappingException, IOException {
         String resource = Helper.getResource(resourceName + ".json");
+
+        Moshi moshi = new Moshi.Builder()
+                .add(Date.class, new Rfc3339DateJsonAdapter())
+                .build();
+
         switch (resourceName) {
             case RESOURCE_CITYS:
                 data_pojo = jacksonMapper.readValue(resource, CityInfo[].class);
+                moshiAdapter = moshi.adapter(CityInfo[].class);
+
                 break;
             case RESOURCE_REPOS:
                 data_pojo = jacksonMapper.readValue(resource, Repo[].class);
+                moshiAdapter = moshi.adapter(Repo[].class);
 
                 break;
             case RESOURCE_USER:
                 data_pojo = jacksonMapper.readValue(resource, UserProfile[].class);
+                moshiAdapter = moshi.adapter(UserProfile[].class);
 
                 break;
             case RESOURCE_REQUEST:
                 data_pojo = jacksonMapper.readValue(resource, Request[].class);
+                moshiAdapter = moshi.adapter(Request[].class);
 
                 break;
         }
@@ -212,6 +225,12 @@ public class SerializationBenchmarks {
     @Benchmark
     public Object map_minimal_json() {
         return minimalJson.toString();
+    }
+
+
+    @Benchmark
+    public Object pojo_moshi() {
+        return moshiAdapter.toJson(data_pojo);
     }
 
 

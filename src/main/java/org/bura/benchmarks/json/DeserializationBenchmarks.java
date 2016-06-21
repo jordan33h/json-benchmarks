@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import com.owlike.genson.GenericType;
 import com.owlike.genson.Genson;
 import com.owlike.genson.GensonBuilder;
+import com.squareup.moshi.*;
 import com.wizzardo.tools.json.JsonTools;
 import groovy.json.JsonSlurper;
 import org.boon.json.JsonFactory;
@@ -27,6 +28,7 @@ import javax.json.Json;
 import javax.json.JsonReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -58,6 +60,10 @@ public class DeserializationBenchmarks {
     public void setup() {
         resource = Helper.getResource(resourceName + ".json");
 
+        Moshi moshi = new Moshi.Builder()
+                .add(Date.class, new Rfc3339DateJsonAdapter())
+                .build();
+
         switch (resourceName) {
             case RESOURCE_CITYS: {
                 gsonType = new TypeToken<List<CityInfo>>() {
@@ -69,6 +75,7 @@ public class DeserializationBenchmarks {
                 gensonType = new GenericType<List<CityInfo>>() {
                 };
                 type = CityInfo.class;
+                moshiAdapter = moshi.adapter(Types.newParameterizedType(List.class, CityInfo.class));
                 break;
             }
             case RESOURCE_REPOS: {
@@ -81,6 +88,7 @@ public class DeserializationBenchmarks {
                 gensonType = new GenericType<List<Repo>>() {
                 };
                 type = Repo.class;
+                moshiAdapter = moshi.adapter(Types.newParameterizedType(List.class, Repo.class));
                 break;
             }
             case RESOURCE_USER: {
@@ -93,6 +101,7 @@ public class DeserializationBenchmarks {
                 gensonType = new GenericType<List<UserProfile>>() {
                 };
                 type = UserProfile.class;
+                moshiAdapter = moshi.adapter(Types.newParameterizedType(List.class, UserProfile.class));
                 break;
             }
             case RESOURCE_REQUEST: {
@@ -105,6 +114,7 @@ public class DeserializationBenchmarks {
                 gensonType = new GenericType<List<Request>>() {
                 };
                 type = Request.class;
+                moshiAdapter = moshi.adapter(Types.newParameterizedType(List.class, Request.class));
                 break;
             }
         }
@@ -113,6 +123,7 @@ public class DeserializationBenchmarks {
         jacksonMapperAfterburner.registerModule(new AfterburnerModule());
     }
 
+    JsonAdapter moshiAdapter;
     java.lang.reflect.Type gsonType;
     com.alibaba.fastjson.TypeReference fastjsonType;
     GenericType gensonType;
@@ -233,6 +244,12 @@ public class DeserializationBenchmarks {
 
     @Benchmark
     public Object map_minimal_json() {
+        return com.eclipsesource.json.Json.parse(resource);
+    }
+
+
+    @Benchmark
+    public Object pojo_moshi() {
         return com.eclipsesource.json.Json.parse(resource);
     }
 
