@@ -2,6 +2,7 @@ package org.bura.benchmarks.json;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.eclipsesource.json.JsonValue;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -63,6 +64,7 @@ public class SerializationBenchmarks {
     List data_map;
     JSONArray jsonArray;
     javax.json.JsonArray javaxJsonArray;
+    JsonValue minimalJson;
 
     @Setup(Level.Iteration)
     public void setup() throws JsonParseException, JsonMappingException, IOException {
@@ -90,6 +92,8 @@ public class SerializationBenchmarks {
         JsonReader jsonReader = Json.createReader(new StringReader(resource));
         javaxJsonArray = jsonReader.readArray();
         jsonReader.close();
+
+        minimalJson = com.eclipsesource.json.Json.parse(resource);
     }
 
     private static ObjectMapper initMapper(boolean afterburner) {
@@ -202,6 +206,12 @@ public class SerializationBenchmarks {
     @Benchmark
     public Object map_mjson() {
         return mjson.Json.make(data_map).toString();
+    }
+
+
+    @Benchmark
+    public Object map_minimal_json() {
+        return minimalJson.toString();
     }
 
 

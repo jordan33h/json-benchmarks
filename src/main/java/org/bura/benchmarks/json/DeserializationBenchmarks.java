@@ -113,6 +113,9 @@ public class DeserializationBenchmarks {
         jacksonMapperAfterburner.registerModule(new AfterburnerModule());
     }
 
+    java.lang.reflect.Type gsonType;
+    com.alibaba.fastjson.TypeReference fastjsonType;
+    GenericType gensonType;
 
     ObjectMapper jacksonMapperAfterburner;
     final ObjectMapper jacksonMapper = new ObjectMapper();
@@ -137,7 +140,6 @@ public class DeserializationBenchmarks {
 
 
     final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create();
-    java.lang.reflect.Type gsonType;
     final java.lang.reflect.Type gsonMapType = new TypeToken<List>() {
     }.getType();
 
@@ -182,8 +184,6 @@ public class DeserializationBenchmarks {
     }
 
 
-    private com.alibaba.fastjson.TypeReference fastjsonType;
-
     @Benchmark
     public Object pojo_fastjson() {
         return JSON.parseObject(resource, fastjsonType);
@@ -213,7 +213,6 @@ public class DeserializationBenchmarks {
     Genson genson = new GensonBuilder()
             .useDateFormat(new ISO8601DateFormat())
             .create();
-    GenericType gensonType;
 
     @Benchmark
     public Object pojo_genson() {
@@ -230,4 +229,11 @@ public class DeserializationBenchmarks {
     public Object map_mjson() {
         return mjson.Json.read(resource);
     }
+
+
+    @Benchmark
+    public Object map_minimal_json() {
+        return com.eclipsesource.json.Json.parse(resource);
+    }
+
 }
