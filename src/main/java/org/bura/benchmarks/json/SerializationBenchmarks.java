@@ -67,7 +67,8 @@ public class SerializationBenchmarks {
     JSONArray jsonArray;
     javax.json.JsonArray javaxJsonArray;
     JsonValue minimalJson;
-    JsonAdapter moshiAdapter;
+    JsonAdapter moshiPojoAdapter;
+    JsonAdapter moshiMapAdapter = new Moshi.Builder().build().adapter(List.class);
 
     @Setup(Level.Iteration)
     public void setup() throws JsonParseException, JsonMappingException, IOException {
@@ -80,22 +81,22 @@ public class SerializationBenchmarks {
         switch (resourceName) {
             case RESOURCE_CITYS:
                 data_pojo = jacksonMapper.readValue(resource, CityInfo[].class);
-                moshiAdapter = moshi.adapter(CityInfo[].class);
+                moshiPojoAdapter = moshi.adapter(CityInfo[].class);
 
                 break;
             case RESOURCE_REPOS:
                 data_pojo = jacksonMapper.readValue(resource, Repo[].class);
-                moshiAdapter = moshi.adapter(Repo[].class);
+                moshiPojoAdapter = moshi.adapter(Repo[].class);
 
                 break;
             case RESOURCE_USER:
                 data_pojo = jacksonMapper.readValue(resource, UserProfile[].class);
-                moshiAdapter = moshi.adapter(UserProfile[].class);
+                moshiPojoAdapter = moshi.adapter(UserProfile[].class);
 
                 break;
             case RESOURCE_REQUEST:
                 data_pojo = jacksonMapper.readValue(resource, Request[].class);
-                moshiAdapter = moshi.adapter(Request[].class);
+                moshiPojoAdapter = moshi.adapter(Request[].class);
 
                 break;
         }
@@ -230,7 +231,12 @@ public class SerializationBenchmarks {
 
     @Benchmark
     public Object pojo_moshi() {
-        return moshiAdapter.toJson(data_pojo);
+        return moshiPojoAdapter.toJson(data_pojo);
+    }
+
+    @Benchmark
+    public Object map_moshi() {
+        return moshiMapAdapter.toJson(data_map);
     }
 
 

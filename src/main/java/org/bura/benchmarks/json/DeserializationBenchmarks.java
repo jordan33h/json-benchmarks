@@ -75,7 +75,7 @@ public class DeserializationBenchmarks {
                 gensonType = new GenericType<List<CityInfo>>() {
                 };
                 type = CityInfo.class;
-                moshiAdapter = moshi.adapter(Types.newParameterizedType(List.class, CityInfo.class));
+                moshiPojoAdapter = moshi.adapter(Types.newParameterizedType(List.class, CityInfo.class));
                 break;
             }
             case RESOURCE_REPOS: {
@@ -88,7 +88,7 @@ public class DeserializationBenchmarks {
                 gensonType = new GenericType<List<Repo>>() {
                 };
                 type = Repo.class;
-                moshiAdapter = moshi.adapter(Types.newParameterizedType(List.class, Repo.class));
+                moshiPojoAdapter = moshi.adapter(Types.newParameterizedType(List.class, Repo.class));
                 break;
             }
             case RESOURCE_USER: {
@@ -101,7 +101,7 @@ public class DeserializationBenchmarks {
                 gensonType = new GenericType<List<UserProfile>>() {
                 };
                 type = UserProfile.class;
-                moshiAdapter = moshi.adapter(Types.newParameterizedType(List.class, UserProfile.class));
+                moshiPojoAdapter = moshi.adapter(Types.newParameterizedType(List.class, UserProfile.class));
                 break;
             }
             case RESOURCE_REQUEST: {
@@ -114,7 +114,7 @@ public class DeserializationBenchmarks {
                 gensonType = new GenericType<List<Request>>() {
                 };
                 type = Request.class;
-                moshiAdapter = moshi.adapter(Types.newParameterizedType(List.class, Request.class));
+                moshiPojoAdapter = moshi.adapter(Types.newParameterizedType(List.class, Request.class));
                 break;
             }
         }
@@ -123,7 +123,8 @@ public class DeserializationBenchmarks {
         jacksonMapperAfterburner.registerModule(new AfterburnerModule());
     }
 
-    JsonAdapter moshiAdapter;
+    JsonAdapter moshiPojoAdapter;
+    JsonAdapter moshiMapAdapter = new Moshi.Builder().build().adapter(List.class);
     java.lang.reflect.Type gsonType;
     com.alibaba.fastjson.TypeReference fastjsonType;
     GenericType gensonType;
@@ -249,8 +250,12 @@ public class DeserializationBenchmarks {
 
 
     @Benchmark
-    public Object pojo_moshi() {
-        return com.eclipsesource.json.Json.parse(resource);
+    public Object pojo_moshi() throws IOException {
+        return moshiPojoAdapter.fromJson(resource);
     }
 
+    @Benchmark
+    public Object map_moshi() throws IOException {
+        return moshiMapAdapter.fromJson(resource);
+    }
 }
