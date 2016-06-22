@@ -14,6 +14,7 @@ Participants:
 - [json.org](https://github.com/stleary/JSON-java)
 - [Mjson](https://bolerio.github.io/mjson/)
 - [minimal-json](https://github.com/ralfstx/minimal-json)
+- [Moshi](https://github.com/square/moshi)
 - [Tools](https://github.com/wizzardo/Tools)
 
 For testing were selected data with different structure:
@@ -56,12 +57,12 @@ As I expected, Boon uses lazy maps and creates actual values only when requested
 ![db.user]
 
 [Results]: https://raw.githubusercontent.com/wizzardo/json-benchmarks/master/results
-[s.user]: https://cloud.githubusercontent.com/assets/5871626/16225391/93ca1eb8-37a6-11e6-860a-5f199b641f6d.png
-[s.request]: https://cloud.githubusercontent.com/assets/5871626/16225390/93c8199c-37a6-11e6-8f3c-5b373ed70888.png
-[s.repos]: https://cloud.githubusercontent.com/assets/5871626/16225389/93c76394-37a6-11e6-878a-473f911ba3f3.png
-[s.cities]: https://cloud.githubusercontent.com/assets/5871626/16225386/93b5823c-37a6-11e6-9cf2-cea266bf4296.png
-[d.user]: https://cloud.githubusercontent.com/assets/5871626/16225383/93b3a214-37a6-11e6-9520-03cd90f3a5c8.png
-[d.request]: https://cloud.githubusercontent.com/assets/5871626/16225387/93b57800-37a6-11e6-94b9-4897ed3c06ec.png
-[d.repos]: https://cloud.githubusercontent.com/assets/5871626/16225385/93b4fe52-37a6-11e6-9ee7-7cfb9b84372e.png
-[d.cities]: https://cloud.githubusercontent.com/assets/5871626/16225384/93b3f03e-37a6-11e6-9912-d0d3cffe38c5.png
-[db.user]: https://cloud.githubusercontent.com/assets/5871626/16225388/93b7f738-37a6-11e6-9c16-1c40e9cb41a0.png
+[s.user]: https://cloud.githubusercontent.com/assets/5871626/16258943/6cabc9de-3860-11e6-94ec-70e6724b9de7.png
+[s.request]: https://cloud.githubusercontent.com/assets/5871626/16258945/6cce3c62-3860-11e6-9f8f-bf7a9deb5500.png
+[s.repos]: https://cloud.githubusercontent.com/assets/5871626/16258946/6ccf3432-3860-11e6-9485-2ef01d3ceb42.png
+[s.cities]: https://cloud.githubusercontent.com/assets/5871626/16258944/6cbfb3a4-3860-11e6-8ed4-6bbe9e37a763.png
+[d.user]: https://cloud.githubusercontent.com/assets/5871626/16258947/6ccf46ac-3860-11e6-8657-80d448928d20.png
+[d.request]: https://cloud.githubusercontent.com/assets/5871626/16258950/6cd849b4-3860-11e6-9cc9-ae7e074fe32e.png
+[d.repos]: https://cloud.githubusercontent.com/assets/5871626/16258949/6cd1cddc-3860-11e6-8664-1d9200e2db03.png
+[d.cities]: https://cloud.githubusercontent.com/assets/5871626/16258948/6ccfbdf8-3860-11e6-8ec1-6fa95c3e9b23.png
+[db.user]: https://cloud.githubusercontent.com/assets/5871626/16258951/6ce28f14-3860-11e6-835a-5bf946523aa2.png
