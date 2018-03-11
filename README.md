@@ -5,6 +5,8 @@
 Participants:
 
 - [Boon](https://github.com/boonproject/boon)
+- [Circe](https://circe.github.io/circe)
+- [DSL-JSON](https://github.com/ngs-doo/dsl-json)
 - [Fastjson](https://github.com/alibaba/fastjson)
 - [Genson](https://owlike.github.io/genson/)
 - [Gson](https://code.google.com/p/google-gson/)
@@ -12,6 +14,7 @@ Participants:
 - [Jackson-afterburner](https://github.com/FasterXML/jackson-module-afterburner)
 - [JSR 353 Glassfish](https://json-processing-spec.java.net/)
 - [json.org](https://github.com/stleary/JSON-java)
+- [Json-iterator](http://jsoniter.com)
 - [Mjson](https://bolerio.github.io/mjson/)
 - [minimal-json](https://github.com/ralfstx/minimal-json)
 - [Moshi](https://github.com/square/moshi)
@@ -19,12 +22,12 @@ Participants:
 
 For testing were selected data with different structure:
 
-- **[citys](src/main/resources/citys.json)** - A large array (29470 items) of simple objects. The compact json representation takes about 2.5 MB.
-- **[repos.json](src/main/resources/repos.json)** - An array of four objects with complex structure. The compact json representation takes about 342.8 kB.
-- **[user.json](src/main/resources/user.json)** - one object with a complex structure. The compact json representation takes about 4.2 kB.
-- **[response.json](src/main/resources/response.json)** - one object with a simple structure. The compact json representation takes about 425 B.
+- **[citys](src/main/resources/citys.json)** - A large array (29470 items) of simple objects. The compact json representation takes about 2.5 MB. Main challenge: floating point numbers
+- **[repos.json](src/main/resources/repos.json)** - An array of four objects with complex structure. The compact json representation takes about 342.8 kB. Main challenge: a lot of String fields
+- **[user.json](src/main/resources/user.json)** - one object with a complex structure. The compact json representation takes about 4.2 kB. Main challenge: dates
+- **[response.json](src/main/resources/response.json)** - one object with a simple structure. The compact json representation takes about 425 B. Main challenge: Maps of Strings, small json
 
-Serialization and deserialization were tested with [POJO](src/main/java/org/bura/benchmarks/json/domain)
+Serialization and deserialization were tested with [POJO](src/main/java/org/bura/benchmarks/json/domain) and Map-like structures
 
 ## Build and Run
 
