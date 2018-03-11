@@ -12,13 +12,13 @@ Participants:
 - [Gson](https://code.google.com/p/google-gson/)
 - [Jackson](http://wiki.fasterxml.com/JacksonRelease20)
 - [Jackson-afterburner](https://github.com/FasterXML/jackson-module-afterburner)
-- [JSR 353 Glassfish](https://json-processing-spec.java.net/)
+- [JSR 353 Glassfish (javax.json)](https://json-processing-spec.java.net/)
 - [json.org](https://github.com/stleary/JSON-java)
 - [Json-iterator](http://jsoniter.com)
 - [Mjson](https://bolerio.github.io/mjson/)
-- [minimal-json](https://github.com/ralfstx/minimal-json)
+- [Minimal-json](https://github.com/ralfstx/minimal-json)
 - [Moshi](https://github.com/square/moshi)
-- [Tools](https://github.com/wizzardo/Tools)
+- [Tools-json](https://github.com/wizzardo/tools)
 
 For testing were selected data with different structure:
 
