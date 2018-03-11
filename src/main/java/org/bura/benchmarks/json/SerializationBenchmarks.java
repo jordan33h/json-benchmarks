@@ -2,6 +2,7 @@ package org.bura.benchmarks.json;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.dslplatform.json.DslJson;
 import com.eclipsesource.json.JsonValue;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -11,18 +12,18 @@ import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jsoniter.extra.JdkDatetimeSupport;
+import com.jsoniter.output.JsonStream;
 import com.owlike.genson.Genson;
 import com.owlike.genson.GensonBuilder;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Rfc3339DateJsonAdapter;
 import com.wizzardo.tools.json.JsonTools;
+import com.wizzardo.tools.misc.Unchecked;
 import groovy.json.JsonOutput;
 import org.boon.json.JsonFactory;
-import org.bura.benchmarks.json.domain.CityInfo;
-import org.bura.benchmarks.json.domain.Repo;
-import org.bura.benchmarks.json.domain.Request;
-import org.bura.benchmarks.json.domain.UserProfile;
+import org.bura.benchmarks.json.domain.*;
 import org.json.JSONArray;
 import org.openjdk.jmh.annotations.*;
 
@@ -69,6 +70,10 @@ public class SerializationBenchmarks {
     JsonValue minimalJson;
     JsonAdapter moshiPojoAdapter;
     JsonAdapter moshiMapAdapter = new Moshi.Builder().build().adapter(List.class);
+    DslJson<Object> dslJson = new DslJson<>(com.dslplatform.json.runtime.Settings
+            .withRuntime()
+            .includeServiceLoader());
+    com.dslplatform.json.JsonWriter dslJsonWriter = dslJson.newWriter();
 
     @Setup(Level.Iteration)
     public void setup() throws JsonParseException, JsonMappingException, IOException {
@@ -108,6 +113,8 @@ public class SerializationBenchmarks {
         jsonReader.close();
 
         minimalJson = com.eclipsesource.json.Json.parse(resource);
+
+        Unchecked.ignore(() -> JdkDatetimeSupport.enable("yyyy-MM-dd'T'HH:mm:ssXXX"));
     }
 
     private static ObjectMapper initMapper(boolean afterburner) {
@@ -239,6 +246,26 @@ public class SerializationBenchmarks {
         return moshiMapAdapter.toJson(data_map);
     }
 
+
+    @Benchmark
+    public Object pojo_dslplatform() {
+        try {
+            dslJsonWriter.serializeObject(data_pojo);
+            return dslJsonWriter.toString();
+        } finally {
+            dslJsonWriter.reset();
+        }
+    }
+
+    @Benchmark
+    public Object pojo_jsonStream() {
+        return JsonStream.serialize(data_pojo);
+    }
+
+    @Benchmark
+    public Object map_jsonIterator() {
+        return JsonStream.serialize(data_map);
+    }
 
     //    @Benchmark
     public String groovy() {

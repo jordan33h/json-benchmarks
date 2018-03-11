@@ -1,6 +1,7 @@
 package org.bura.benchmarks.json;
 
 import com.alibaba.fastjson.JSON;
+import com.dslplatform.json.DslJson;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
@@ -8,12 +9,17 @@ import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.jsoniter.JsonIterator;
+import com.jsoniter.extra.JdkDatetimeSupport;
+import com.jsoniter.spi.TypeLiteral;
 import com.owlike.genson.GenericType;
 import com.owlike.genson.Genson;
 import com.owlike.genson.GensonBuilder;
 import com.squareup.moshi.*;
 import com.wizzardo.tools.json.JsonTools;
+import com.wizzardo.tools.misc.Unchecked;
 import groovy.json.JsonSlurper;
+import io.circe.ParsingFailure;
 import org.boon.json.JsonFactory;
 import org.boon.json.JsonParserFactory;
 import org.boon.json.JsonSerializerFactory;
@@ -23,6 +29,9 @@ import org.bura.benchmarks.json.domain.Request;
 import org.bura.benchmarks.json.domain.UserProfile;
 import org.json.JSONArray;
 import org.openjdk.jmh.annotations.*;
+import scala.util.Either;
+import io.circe.Decoder;
+import io.circe.parser.package$;
 
 import javax.json.Json;
 import javax.json.JsonReader;
@@ -55,6 +64,7 @@ public class DeserializationBenchmarks {
     private String resource;
 
     private Class type;
+    private TypeLiteral jsonIteratorType;
 
     @Setup(Level.Iteration)
     public void setup() {
@@ -76,6 +86,8 @@ public class DeserializationBenchmarks {
                 };
                 type = CityInfo.class;
                 moshiPojoAdapter = moshi.adapter(Types.newParameterizedType(List.class, CityInfo.class));
+                jsonIteratorType = new TypeLiteral<List<CityInfo>>() {
+                };
                 break;
             }
             case RESOURCE_REPOS: {
@@ -89,6 +101,8 @@ public class DeserializationBenchmarks {
                 };
                 type = Repo.class;
                 moshiPojoAdapter = moshi.adapter(Types.newParameterizedType(List.class, Repo.class));
+                jsonIteratorType = new TypeLiteral<List<Repo>>() {
+                };
                 break;
             }
             case RESOURCE_USER: {
@@ -102,6 +116,8 @@ public class DeserializationBenchmarks {
                 };
                 type = UserProfile.class;
                 moshiPojoAdapter = moshi.adapter(Types.newParameterizedType(List.class, UserProfile.class));
+                jsonIteratorType = new TypeLiteral<List<UserProfile>>() {
+                };
                 break;
             }
             case RESOURCE_REQUEST: {
@@ -115,12 +131,16 @@ public class DeserializationBenchmarks {
                 };
                 type = Request.class;
                 moshiPojoAdapter = moshi.adapter(Types.newParameterizedType(List.class, Request.class));
+                jsonIteratorType = new TypeLiteral<List<Request>>() {
+                };
                 break;
             }
         }
 
         jacksonMapperAfterburner = new ObjectMapper();
         jacksonMapperAfterburner.registerModule(new AfterburnerModule());
+
+        Unchecked.ignore(() -> JdkDatetimeSupport.enable("yyyy-MM-dd'T'HH:mm:ssXXX"));
     }
 
     JsonAdapter moshiPojoAdapter;
@@ -134,6 +154,9 @@ public class DeserializationBenchmarks {
     TypeReference<?> jacksonType;
     final TypeReference<List> jacksonMapType = new TypeReference<List>() {
     };
+    DslJson<Object> dslJson = new DslJson<>(com.dslplatform.json.runtime.Settings
+            .withRuntime()
+            .includeServiceLoader());
 
     @Benchmark
     public Object pojo_jackson() throws IOException {
@@ -257,5 +280,25 @@ public class DeserializationBenchmarks {
     @Benchmark
     public Object map_moshi() throws IOException {
         return moshiMapAdapter.fromJson(resource);
+    }
+
+    @Benchmark
+    public Object pojo_dslplatform() throws IOException {
+        com.dslplatform.json.JsonReader reader = dslJson.newReader(resource);
+        reader.startArray();
+        reader.read();
+        return reader.deserializeCollection(dslJson.tryFindReader(type));
+    }
+
+    @Benchmark
+    public Object pojo_jsonIterator() throws IOException {
+        JsonIterator iterator = JsonIterator.parse(resource);
+        return iterator.read(jsonIteratorType);
+    }
+
+    @Benchmark
+    public Object map_circe() throws IOException {
+        Either<ParsingFailure, io.circe.Json> either = package$.MODULE$.parse(resource);
+        return either.right().get().as(Decoder.decodeList(Decoder.decodeJsonObject()));
     }
 }
