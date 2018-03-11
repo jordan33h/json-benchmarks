@@ -7,7 +7,7 @@ package org.bura.benchmarks.json.domain;
  */
 public class Profile {
 
-    private String id;
+    private Long id;
     private String login;
     private String avatar_url;
     private String gravatar_id;
@@ -28,7 +28,7 @@ public class Profile {
     public Profile() {
     }
 
-    public Profile(String id, String login, String avatar_url, String gravatar_id, String url, String html_url, String followers_url, String following_url, String gists_url,
+    public Profile(Long id, String login, String avatar_url, String gravatar_id, String url, String html_url, String followers_url, String following_url, String gists_url,
             String starred_url, String subscriptions_url, String organizations_url, String repos_url, String events_url, String received_events_url, String type, Boolean site_admin) {
 
         this.id = id;
@@ -50,11 +50,11 @@ public class Profile {
         this.site_admin = site_admin;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
