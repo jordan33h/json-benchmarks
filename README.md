@@ -37,16 +37,14 @@ Serialization and deserialization were tested with [POJO](src/main/java/org/bura
 
 ## [Results]
 
-
-![s.user]
-![s.request]
-![s.repos]
-![s.cities]
-
-![d.user]
-![d.request]
-![d.repos]
-![d.cities]
+![serializationbenchmarks citys](https://user-images.githubusercontent.com/5871626/37311902-605d84f0-2649-11e8-969c-a1c4cab6da21.png)
+![serializationbenchmarks repos](https://user-images.githubusercontent.com/5871626/37311903-607d2706-2649-11e8-86b9-7d026e070a10.png)
+![serializationbenchmarks request](https://user-images.githubusercontent.com/5871626/37311904-6098c6c8-2649-11e8-94a7-ba433d60c397.png)
+![serializationbenchmarks user](https://user-images.githubusercontent.com/5871626/37311905-60b807b8-2649-11e8-9494-7ebb03625c89.png)
+![deserializationbenchmarks citys](https://user-images.githubusercontent.com/5871626/37311915-670c1a8c-2649-11e8-8906-2f44fc420246.png)
+![deserializationbenchmarks repos](https://user-images.githubusercontent.com/5871626/37311917-672a421e-2649-11e8-8cd9-eb65ae559c14.png)
+![deserializationbenchmarks request](https://user-images.githubusercontent.com/5871626/37311919-674a2ac0-2649-11e8-8c75-a7dcf0dde9a2.png)
+![deserializationbenchmarks user](https://user-images.githubusercontent.com/5871626/37311920-676e68f4-2649-11e8-84a3-91e74b72d069.png)
 
 
 ## Checking performance of Boon
@@ -57,15 +55,6 @@ and compared it with Tools and pojos.
 
 As I expected, Boon uses lazy maps and creates actual values only when requested
 
-![db.user]
+![deserializationboonbenchmarks](https://user-images.githubusercontent.com/5871626/37311922-6794f352-2649-11e8-830a-53028bb07bd4.png)
 
 [Results]: https://raw.githubusercontent.com/wizzardo/json-benchmarks/master/results
-[s.user]: https://cloud.githubusercontent.com/assets/5871626/16258943/6cabc9de-3860-11e6-94ec-70e6724b9de7.png
-[s.request]: https://cloud.githubusercontent.com/assets/5871626/16258945/6cce3c62-3860-11e6-9f8f-bf7a9deb5500.png
-[s.repos]: https://cloud.githubusercontent.com/assets/5871626/16258946/6ccf3432-3860-11e6-9485-2ef01d3ceb42.png
-[s.cities]: https://cloud.githubusercontent.com/assets/5871626/16258944/6cbfb3a4-3860-11e6-8ed4-6bbe9e37a763.png
-[d.user]: https://cloud.githubusercontent.com/assets/5871626/16258947/6ccf46ac-3860-11e6-8657-80d448928d20.png
-[d.request]: https://cloud.githubusercontent.com/assets/5871626/16258950/6cd849b4-3860-11e6-9cc9-ae7e074fe32e.png
-[d.repos]: https://cloud.githubusercontent.com/assets/5871626/16258949/6cd1cddc-3860-11e6-8664-1d9200e2db03.png
-[d.cities]: https://cloud.githubusercontent.com/assets/5871626/16258948/6ccfbdf8-3860-11e6-8ec1-6fa95c3e9b23.png
-[db.user]: https://cloud.githubusercontent.com/assets/5871626/16258951/6ce28f14-3860-11e6-835a-5bf946523aa2.png
