@@ -25,7 +25,7 @@ For testing were selected data with different structure:
 - **[citys](src/main/resources/citys.json)** - A large array (29470 items) of simple objects. The compact json representation takes about 2.5 MB. Main challenge: floating point numbers
 - **[repos.json](src/main/resources/repos.json)** - An array of four objects with complex structure. The compact json representation takes about 342.8 kB. Main challenge: a lot of String fields
 - **[user.json](src/main/resources/user.json)** - one object with a complex structure. The compact json representation takes about 4.2 kB. Main challenge: dates
-- **[response.json](src/main/resources/response.json)** - one object with a simple structure. The compact json representation takes about 425 B. Main challenge: Maps of Strings, small json
+- **[request.json](src/main/resources/request.json)** - one object with a simple structure. The compact json representation takes about 425 B. Main challenge: Maps of Strings, small json
 
 Serialization and deserialization were tested with [POJO](src/main/java/org/bura/benchmarks/json/domain) and Map-like structures
 
