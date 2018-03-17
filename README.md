@@ -32,7 +32,9 @@ Serialization and deserialization were tested with [POJO](src/main/java/org/bura
 ## Build and Run
 
 ```shell
-./gradlew clean && ./gradlew shadow && java -jar target/benchmarks.jar ".*Benchmarks.*"
+./gradlew clean && ./gradlew shadowJar && java -jar build/libs/json-benchmarks-all.jar ".*Benchmarks.*"
+# or individual benchmarks
+./gradlew clean && ./gradlew shadowJar && java -jar build/libs/json-benchmarks-all.jar ".(Des|S)erializationBenchmarks.(pojo|map)_(dslplatform|tools|kotlinx|jsonIterator|klaxon).*"  
 ```
 
 ## [Results]
