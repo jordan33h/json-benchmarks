@@ -19,11 +19,11 @@ import com.owlike.genson.GensonBuilder;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Rfc3339DateJsonAdapter;
+import com.wizzardo.tools.interfaces.Mapper;
 import com.wizzardo.tools.json.JsonTools;
 import com.wizzardo.tools.misc.Unchecked;
 import groovy.json.JsonOutput;
 import org.boon.json.JsonFactory;
-import org.bura.benchmarks.json.domain.*;
 import org.json.JSONArray;
 import org.openjdk.jmh.annotations.*;
 
@@ -43,8 +43,8 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Fork(value = 1, jvmArgsAppend = {"-Xmx2048m", "-server", "-XX:+AggressiveOpts"})
-@Measurement(iterations = 10, time = 2, timeUnit = TimeUnit.SECONDS)
-@Warmup(iterations = 20, time = 2, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 20, time = 1, timeUnit = TimeUnit.SECONDS)
 public class SerializationBenchmarks {
 
     private static final String RESOURCE_CITYS = "citys";
@@ -64,6 +64,9 @@ public class SerializationBenchmarks {
     private String resourceName;
 
     Object data_pojo;
+    List kotlin_pojo;
+    Mapper<List<Object>, String> kotlinxSerializer;
+    Mapper<List<Object>, String> klaxonSerializer;
     List data_map;
     JSONArray jsonArray;
     javax.json.JsonArray javaxJsonArray;
@@ -113,6 +116,10 @@ public class SerializationBenchmarks {
         jsonReader.close();
 
         minimalJson = com.eclipsesource.json.Json.parse(resource);
+
+        kotlin_pojo = (List) KotlinHelper.getKotlinxParser(resourceName).map(resource);
+        kotlinxSerializer = KotlinHelper.getKotlinxSerializer(resourceName);
+        klaxonSerializer = KotlinHelper.getKlaxonSerializer(resourceName);
 
         Unchecked.ignore(() -> JdkDatetimeSupport.enable("yyyy-MM-dd'T'HH:mm:ssXXX"));
     }
@@ -258,13 +265,23 @@ public class SerializationBenchmarks {
     }
 
     @Benchmark
-    public Object pojo_jsonStream() {
+    public Object pojo_jsonIterator() {
         return JsonStream.serialize(data_pojo);
     }
 
     @Benchmark
     public Object map_jsonIterator() {
         return JsonStream.serialize(data_map);
+    }
+
+    @Benchmark
+    public Object pojo_kotlinx() {
+        return kotlinxSerializer.map(kotlin_pojo);
+    }
+
+    @Benchmark
+    public Object pojo_klaxon() {
+        return klaxonSerializer.map(kotlin_pojo);
     }
 
     //    @Benchmark

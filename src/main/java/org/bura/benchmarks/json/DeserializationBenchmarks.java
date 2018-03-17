@@ -16,6 +16,7 @@ import com.owlike.genson.GenericType;
 import com.owlike.genson.Genson;
 import com.owlike.genson.GensonBuilder;
 import com.squareup.moshi.*;
+import com.wizzardo.tools.interfaces.Mapper;
 import com.wizzardo.tools.json.JsonTools;
 import com.wizzardo.tools.misc.Unchecked;
 import groovy.json.JsonSlurper;
@@ -45,14 +46,14 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Fork(value = 1, jvmArgsAppend = {"-Xmx2048m", "-server", "-XX:+AggressiveOpts"})
-@Measurement(iterations = 10, time = 2, timeUnit = TimeUnit.SECONDS)
-@Warmup(iterations = 20, time = 2, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 20, time = 1, timeUnit = TimeUnit.SECONDS)
 public class DeserializationBenchmarks {
 
-    private static final String RESOURCE_CITYS = "citys";
-    private static final String RESOURCE_REPOS = "repos";
-    private static final String RESOURCE_USER = "user";
-    private static final String RESOURCE_REQUEST = "request";
+    public static final String RESOURCE_CITYS = "citys";
+    public static final String RESOURCE_REPOS = "repos";
+    public static final String RESOURCE_USER = "user";
+    public static final String RESOURCE_REQUEST = "request";
 
     @Param({RESOURCE_CITYS, RESOURCE_REPOS, RESOURCE_USER, RESOURCE_REQUEST})
 //    @Param({ RESOURCE_CITYS })
@@ -140,9 +141,14 @@ public class DeserializationBenchmarks {
         jacksonMapperAfterburner = new ObjectMapper();
         jacksonMapperAfterburner.registerModule(new AfterburnerModule());
 
+        kolinxParser = KotlinHelper.getKotlinxParser(resourceName);
+        klaxonParser = KotlinHelper.getKlaxonParser(resourceName);
+
         Unchecked.ignore(() -> JdkDatetimeSupport.enable("yyyy-MM-dd'T'HH:mm:ssXXX"));
     }
 
+    Mapper<String, Object> kolinxParser;
+    Mapper<String, Object> klaxonParser;
     JsonAdapter moshiPojoAdapter;
     JsonAdapter moshiMapAdapter = new Moshi.Builder().build().adapter(List.class);
     java.lang.reflect.Type gsonType;
@@ -300,5 +306,15 @@ public class DeserializationBenchmarks {
     public Object map_circe() throws IOException {
         Either<ParsingFailure, io.circe.Json> either = package$.MODULE$.parse(resource);
         return either.right().get().as(Decoder.decodeList(Decoder.decodeJsonObject()));
+    }
+
+    @Benchmark
+    public Object pojo_kotlinx() throws IOException {
+        return kolinxParser.map(resource);
+    }
+
+    @Benchmark
+    public Object pojo_klaxon() throws IOException {
+        return klaxonParser.map(resource);
     }
 }
