@@ -23,8 +23,8 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Fork(value = 1, jvmArgsAppend = {"-Xmx2048m", "-server", "-XX:+AggressiveOpts"})
-@Measurement(iterations = 10, time = 2, timeUnit = TimeUnit.SECONDS)
-@Warmup(iterations = 20, time = 2, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 20, time = 1, timeUnit = TimeUnit.SECONDS)
 public class DeserializationBoonBenchmarks {
 
     private String resource;

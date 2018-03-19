@@ -1,4 +1,4 @@
-package org.bura.benchmarks.json
+package org.bura.benchmarks.json.kotlin
 
 import com.beust.klaxon.Converter
 import com.beust.klaxon.JsonValue
@@ -8,6 +8,7 @@ import com.wizzardo.tools.io.FileTools
 import kotlinx.serialization.*
 import kotlinx.serialization.internal.ArrayListSerializer
 import kotlinx.serialization.json.JSON
+import org.bura.benchmarks.json.DeserializationBenchmarks
 import java.lang.IllegalArgumentException
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -281,3 +282,4 @@ val KlaxonDateConverter = object : Converter<Date?> {
             return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(OffsetDateTime.ofInstant(o.toInstant(), ZoneOffset.UTC))
     }
 }
+

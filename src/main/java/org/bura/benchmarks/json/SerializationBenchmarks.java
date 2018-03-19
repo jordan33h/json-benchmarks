@@ -24,6 +24,8 @@ import com.wizzardo.tools.json.JsonTools;
 import com.wizzardo.tools.misc.Unchecked;
 import groovy.json.JsonOutput;
 import org.boon.json.JsonFactory;
+import org.bura.benchmarks.json.domain.*;
+import org.bura.benchmarks.json.kotlin.KotlinHelper;
 import org.json.JSONArray;
 import org.openjdk.jmh.annotations.*;
 
@@ -42,6 +44,7 @@ import java.util.concurrent.TimeUnit;
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
+@Timeout(time = 20)
 @Fork(value = 1, jvmArgsAppend = {"-Xmx2048m", "-server", "-XX:+AggressiveOpts"})
 @Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
 @Warmup(iterations = 20, time = 1, timeUnit = TimeUnit.SECONDS)
@@ -107,6 +110,8 @@ public class SerializationBenchmarks {
                 moshiPojoAdapter = moshi.adapter(Request[].class);
 
                 break;
+            default:
+                throw new IllegalStateException("Unknown resource: " + resourceName);
         }
         data_map = jacksonMapper.readValue(resource, List.class);
         jsonArray = new JSONArray(resource);
