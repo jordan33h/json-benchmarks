@@ -266,20 +266,16 @@ object DateSerializer : KSerializer<Date> {
     }
 }
 
-val KlaxonDateConverter = object : Converter<Date?> {
+val KlaxonDateConverter = object : Converter {
+    override fun canConvert(cls: Class<*>): Boolean {
+        return cls == Date::class.java
+    }
 
     override fun fromJson(jv: JsonValue) =
-            if (jv.string != null) {
-                Date(LocalDateTime.parse(jv.string, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toInstant(ZoneOffset.UTC).toEpochMilli())
-            } else {
-                null
-            }
+            Date(LocalDateTime.parse(jv.string, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toInstant(ZoneOffset.UTC).toEpochMilli())
 
-    override fun toJson(o: Date?): String? {
-        if (o == null)
-            return null;
-        else
-            return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(OffsetDateTime.ofInstant(o.toInstant(), ZoneOffset.UTC))
+    override fun toJson(o: Any): String {
+        return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(OffsetDateTime.ofInstant((o as Date).toInstant(), ZoneOffset.UTC))
     }
 }
 
