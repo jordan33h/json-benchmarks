@@ -39,14 +39,14 @@ Serialization and deserialization were tested with [POJO](src/main/java/org/bura
 
 ## [Results]
 
-![serializationbenchmarks citys](https://user-images.githubusercontent.com/5871626/37598220-f7b52528-2b81-11e8-9931-942c498b3565.png)
-![serializationbenchmarks repos](https://user-images.githubusercontent.com/5871626/37598222-f7dd93be-2b81-11e8-8c91-c031b2785f32.png)
-![serializationbenchmarks request](https://user-images.githubusercontent.com/5871626/37598223-f7f850c8-2b81-11e8-9ca8-da76ebe24b2e.png)
-![serializationbenchmarks user](https://user-images.githubusercontent.com/5871626/37598225-f81882e4-2b81-11e8-9215-a96587bc1cb6.png)
-![deserializationbenchmarks citys](https://user-images.githubusercontent.com/5871626/37598235-fd82ebc0-2b81-11e8-8f5f-0e4519a2e662.png)
-![deserializationbenchmarks repos](https://user-images.githubusercontent.com/5871626/37598237-fda3d150-2b81-11e8-9b40-939ec2346eab.png)
-![deserializationbenchmarks request](https://user-images.githubusercontent.com/5871626/37598238-fdbf8e36-2b81-11e8-898f-a3c868ce052a.png)
-![deserializationbenchmarks user](https://user-images.githubusercontent.com/5871626/37598239-fddfebcc-2b81-11e8-8c82-db3b5420b9c8.png)
+![serializationbenchmarks user](https://user-images.githubusercontent.com/5871626/40268113-38cd669a-5b68-11e8-937b-25e427ebbc46.png)
+![serializationbenchmarks citys](https://user-images.githubusercontent.com/5871626/40268114-38f4d31a-5b68-11e8-95a4-ebfcba2245b2.png)
+![serializationbenchmarks repos](https://user-images.githubusercontent.com/5871626/40268115-391c1704-5b68-11e8-843f-c1721118ad7b.png)
+![serializationbenchmarks request](https://user-images.githubusercontent.com/5871626/40268116-3941e25e-5b68-11e8-89c3-356fef2c573d.png)
+![deserializationbenchmarks user](https://user-images.githubusercontent.com/5871626/40268117-396627a4-5b68-11e8-9c1e-05b68640fe99.png)
+![deserializationbenchmarks citys](https://user-images.githubusercontent.com/5871626/40268118-39a16472-5b68-11e8-8aa0-0b2fd3174b91.png)
+![deserializationbenchmarks repos](https://user-images.githubusercontent.com/5871626/40268119-39c8aa46-5b68-11e8-902a-02a2f52e46d1.png)
+![deserializationbenchmarks request](https://user-images.githubusercontent.com/5871626/40268121-39f3cdac-5b68-11e8-95a4-375ab42a0565.png)
 
 
 ## Checking performance of Boon
@@ -57,6 +57,6 @@ and compared it with Tools and pojos.
 
 As I expected, Boon uses lazy maps and creates actual values only when requested
 
-![deserializationboonbenchmarks](https://user-images.githubusercontent.com/5871626/37598246-00a70fac-2b82-11e8-877d-479410719036.png)
+![deserializationboonbenchmarks](https://user-images.githubusercontent.com/5871626/40268122-3a19ea82-5b68-11e8-9c90-715dfca55afe.png)
 
 [Results]: https://raw.githubusercontent.com/wizzardo/json-benchmarks/master/results
