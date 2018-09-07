@@ -46,8 +46,8 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Timeout(time = 20)
 @Fork(value = 1, jvmArgsAppend = {"-Xmx2048m", "-server", "-XX:+AggressiveOpts"})
-@Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
-@Warmup(iterations = 20, time = 1, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 15, time = 1, timeUnit = TimeUnit.SECONDS)
 public class SerializationBenchmarks {
 
     private static final String RESOURCE_CITYS = "citys";
@@ -208,6 +208,11 @@ public class SerializationBenchmarks {
     @Benchmark
     public String map_json() {
         return jsonArray.toString();
+    }
+
+    @Benchmark
+    public String map_json_simple() {
+        return org.json.simple.JSONArray.toJSONString(data_map);
     }
 
 

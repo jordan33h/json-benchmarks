@@ -27,6 +27,7 @@ import org.boon.json.JsonSerializerFactory;
 import org.bura.benchmarks.json.domain.*;
 import org.bura.benchmarks.json.kotlin.KotlinHelper;
 import org.json.JSONArray;
+import org.json.simple.parser.ParseException;
 import org.openjdk.jmh.annotations.*;
 import scala.util.Either;
 import io.circe.Decoder;
@@ -45,8 +46,8 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Timeout(time = 20)
 @Fork(value = 1, jvmArgsAppend = {"-Xmx2048m", "-server", "-XX:+AggressiveOpts"})
-@Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
-@Warmup(iterations = 20, time = 1, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 15, time = 1, timeUnit = TimeUnit.SECONDS)
 public class DeserializationBenchmarks {
 
     public static final String RESOURCE_CITYS = "citys";
@@ -238,6 +239,11 @@ public class DeserializationBenchmarks {
     @Benchmark
     public Object map_json_org() {
         return new JSONArray(resource);
+    }
+
+    @Benchmark
+    public Object map_json_simple() throws ParseException {
+        return new org.json.simple.parser.JSONParser().parse(resource);
     }
 
 
