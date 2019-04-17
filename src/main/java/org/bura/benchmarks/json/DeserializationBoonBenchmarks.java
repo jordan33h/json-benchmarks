@@ -1,7 +1,9 @@
 package org.bura.benchmarks.json;
 
 import com.wizzardo.tools.json.JsonTools;
-import org.boon.json.JsonFactory;
+
+import org.boon.json.JsonParserFactory;
+import org.boon.json.JsonSerializerFactory;
 import org.bura.benchmarks.json.domain.UserProfile;
 import org.openjdk.jmh.annotations.*;
 
@@ -27,23 +29,23 @@ public class DeserializationBoonBenchmarks {
 
     @Benchmark
     public Object boon_pojo() {
-        return JsonFactory.create().readValue(resource, List.class, UserProfile.class);
+        return new JsonParserFactory().create().parseList(UserProfile.class, resource);
     }
 
     @Benchmark
     public Object boon_map() {
-        return JsonFactory.create().fromJson(resource);
+        return new JsonSerializerFactory().create().serialize(resource);
     }
 
     @Benchmark
     public Object boon_pojo_get() {
-        List<UserProfile> list = JsonFactory.create().readValue(resource, List.class, UserProfile.class);
+        List<UserProfile> list = new JsonParserFactory().create().parseList(UserProfile.class, resource);
         return list.get(0).getEmail();
     }
 
     @Benchmark
     public Object boon_map_get() {
-        return ((Map) ((List) JsonFactory.create().fromJson(resource)).get(0)).get("email");
+        return ((Map) ((List) new JsonSerializerFactory().create().serialize(resource)).get(0)).get("email");
     }
 
 

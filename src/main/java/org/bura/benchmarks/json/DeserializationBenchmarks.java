@@ -20,9 +20,7 @@ import com.wizzardo.tools.interfaces.Mapper;
 import com.wizzardo.tools.json.JsonTools;
 import com.wizzardo.tools.misc.Unchecked;
 import io.circe.ParsingFailure;
-import org.boon.json.JsonFactory;
 import org.boon.json.JsonParserFactory;
-import org.boon.json.JsonSerializerFactory;
 import org.bura.benchmarks.json.domain.*;
 import org.json.JSONArray;
 import org.json.simple.parser.ParseException;
@@ -192,12 +190,12 @@ public class DeserializationBenchmarks {
 
     @Benchmark
     public Object pojo_boon() {
-        return JsonFactory.create().readValue(resource, List.class, type);
+        return new JsonParserFactory().create().parseList(type, resource);
     }
 
     @Benchmark
     public Object map_boon() {
-        return JsonFactory.create(new JsonParserFactory().setCheckDates(false), new JsonSerializerFactory()).fromJson(resource);
+        return new JsonParserFactory().create().parseMap(resource);
     }
 
     @Benchmark

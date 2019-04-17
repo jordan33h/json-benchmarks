@@ -20,7 +20,8 @@ import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Rfc3339DateJsonAdapter;
 import com.wizzardo.tools.json.JsonTools;
 import com.wizzardo.tools.misc.Unchecked;
-import org.boon.json.JsonFactory;
+
+import org.boon.json.JsonSerializerFactory;
 import org.bura.benchmarks.json.domain.*;
 import org.json.JSONArray;
 import org.openjdk.jmh.annotations.*;
@@ -157,12 +158,12 @@ public class SerializationBenchmarks {
 
     @Benchmark
     public String pojo_boon() {
-        return JsonFactory.createUseJSONDates().toJson(data_pojo);
+        return new JsonSerializerFactory().setJsonFormatForDates(true).create().serialize(data_pojo).toString();
     }
 
     @Benchmark
     public String map_boon() {
-        return JsonFactory.createUseJSONDates().toJson(data_map);
+        return new JsonSerializerFactory().setJsonFormatForDates(true).create().serialize(data_map).toString();
     }
 
 
