@@ -9,22 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-//        Benchmark                                           (resourceName)   Mode  Cnt       Score        Error  Units
-//        DeserializationBoonBenchmarks.boon_map                         N/A  thrpt   10   52525.301 ±   4838.818  ops/s
-//        DeserializationBoonBenchmarks.boon_map_get                     N/A  thrpt   10   35181.680 ±   5627.096  ops/s
-//        DeserializationBoonBenchmarks.boon_pojo                        N/A  thrpt   10   12494.686 ±    840.393  ops/s
-//        DeserializationBoonBenchmarks.boon_pojo_get                    N/A  thrpt   10   12387.501 ±    847.777  ops/s
-//        DeserializationBoonBenchmarks.tools_map                        N/A  thrpt   10   51425.221 ±   5017.561  ops/s
-//        DeserializationBoonBenchmarks.tools_map_get                    N/A  thrpt   10   49752.246 ±   7382.129  ops/s
-//        DeserializationBoonBenchmarks.tools_pojo                       N/A  thrpt   10   21037.825 ±   1572.674  ops/s
-//        DeserializationBoonBenchmarks.tools_pojo_get                   N/A  thrpt   10   21114.613 ±   2102.971  ops/s
-
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Fork(value = 1, jvmArgsAppend = {"-Xmx2048m", "-server", "-XX:+AggressiveOpts"})
-@Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
-@Warmup(iterations = 20, time = 1, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 10, time = 1)
+@Warmup(iterations = 5, time = 1)
 public class DeserializationBoonBenchmarks {
 
     private String resource;

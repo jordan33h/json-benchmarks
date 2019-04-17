@@ -19,13 +19,11 @@ import com.squareup.moshi.*;
 import com.wizzardo.tools.interfaces.Mapper;
 import com.wizzardo.tools.json.JsonTools;
 import com.wizzardo.tools.misc.Unchecked;
-import groovy.json.JsonSlurper;
 import io.circe.ParsingFailure;
 import org.boon.json.JsonFactory;
 import org.boon.json.JsonParserFactory;
 import org.boon.json.JsonSerializerFactory;
 import org.bura.benchmarks.json.domain.*;
-import org.bura.benchmarks.json.kotlin.KotlinHelper;
 import org.json.JSONArray;
 import org.json.simple.parser.ParseException;
 import org.openjdk.jmh.annotations.*;
@@ -46,8 +44,8 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Timeout(time = 20)
 @Fork(value = 1, jvmArgsAppend = {"-Xmx2048m", "-server", "-XX:+AggressiveOpts"})
-@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
-@Warmup(iterations = 15, time = 1, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 10, time = 3)
+@Warmup(iterations = 5, time = 3)
 public class DeserializationBenchmarks {
 
     public static final String RESOURCE_CITYS = "citys";
@@ -55,7 +53,7 @@ public class DeserializationBenchmarks {
     public static final String RESOURCE_USER = "user";
     public static final String RESOURCE_REQUEST = "request";
 
-    @Param({RESOURCE_CITYS, RESOURCE_REPOS, RESOURCE_USER, RESOURCE_REQUEST})
+    @Param({RESOURCE_USER, RESOURCE_REQUEST})
 //    @Param({ RESOURCE_CITYS })
 //    @Param({RESOURCE_REPOS})
 //    @Param({RESOURCE_REQUEST})
@@ -141,9 +139,6 @@ public class DeserializationBenchmarks {
         jacksonMapperAfterburner = new ObjectMapper();
         jacksonMapperAfterburner.registerModule(new AfterburnerModule());
 
-        kolinxParser = KotlinHelper.getKotlinxParser(resourceName);
-        klaxonParser = KotlinHelper.getKlaxonParser(resourceName);
-
         Unchecked.ignore(() -> JdkDatetimeSupport.enable("yyyy-MM-dd'T'HH:mm:ssXXX"));
     }
 
@@ -204,15 +199,6 @@ public class DeserializationBenchmarks {
     public Object map_boon() {
         return JsonFactory.create(new JsonParserFactory().setCheckDates(false), new JsonSerializerFactory()).fromJson(resource);
     }
-
-
-    private final JsonSlurper groovy = new JsonSlurper();
-
-    //    @Benchmark
-    public Object groovy() {
-        return groovy.parseText(resource);
-    }
-
 
     @Benchmark
     public Object pojo_tools() {
