@@ -22,10 +22,8 @@ import com.squareup.moshi.Rfc3339DateJsonAdapter;
 import com.wizzardo.tools.interfaces.Mapper;
 import com.wizzardo.tools.json.JsonTools;
 import com.wizzardo.tools.misc.Unchecked;
-import groovy.json.JsonOutput;
-import org.boon.json.JsonFactory;
+import org.boon.json.JsonSerializerFactory;
 import org.bura.benchmarks.json.domain.*;
-import org.bura.benchmarks.json.kotlin.KotlinHelper;
 import org.json.JSONArray;
 import org.openjdk.jmh.annotations.*;
 
@@ -42,12 +40,12 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
-@BenchmarkMode(Mode.Throughput)
+@BenchmarkMode({Mode.Throughput, Mode.SingleShotTime})
 @OutputTimeUnit(TimeUnit.SECONDS)
-@Timeout(time = 20)
-@Fork(value = 1, jvmArgsAppend = {"-Xmx2048m", "-server", "-XX:+AggressiveOpts"})
-@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
-@Warmup(iterations = 15, time = 1, timeUnit = TimeUnit.SECONDS)
+@Timeout(time = 30)
+@Fork(value = 1, jvmArgsAppend = {"-Xmx1024m", "-Xms512m", "-server", "-XX:+AggressiveOpts"})
+@Measurement(iterations = 1, time = 1)
+@Warmup(iterations = 1, time = 1)
 public class SerializationBenchmarks {
 
     private static final String RESOURCE_CITYS = "citys";
@@ -58,12 +56,7 @@ public class SerializationBenchmarks {
     private static final String DATA_STYLE_POJO = "pojo";
     private static final String DATA_STYLE_MAPLIST = "maplist";
 
-    @Param({RESOURCE_CITYS, RESOURCE_REPOS, RESOURCE_USER, RESOURCE_REQUEST})
-//    @Param({RESOURCE_REPOS, RESOURCE_USER, RESOURCE_REQUEST})
-//    @Param({ RESOURCE_CITYS})
-//    @Param({ RESOURCE_REPOS})
-//    @Param({ RESOURCE_REQUEST})
-//    @Param({ RESOURCE_USER})
+    @Param({RESOURCE_USER, RESOURCE_REQUEST})
     private String resourceName;
 
     Object data_pojo;
@@ -122,10 +115,6 @@ public class SerializationBenchmarks {
 
         minimalJson = com.eclipsesource.json.Json.parse(resource);
 
-        kotlin_pojo = (List) KotlinHelper.getKotlinxParser(resourceName).map(resource);
-        kotlinxSerializer = KotlinHelper.getKotlinxSerializer(resourceName);
-        klaxonSerializer = KotlinHelper.getKlaxonSerializer(resourceName);
-
         Unchecked.ignore(() -> JdkDatetimeSupport.enable("yyyy-MM-dd'T'HH:mm:ssXXX"));
     }
 
@@ -174,12 +163,12 @@ public class SerializationBenchmarks {
 
     @Benchmark
     public String pojo_boon() {
-        return JsonFactory.createUseJSONDates().toJson(data_pojo);
+        return new JsonSerializerFactory().setJsonFormatForDates(true).create().serialize(data_pojo).toString();
     }
 
     @Benchmark
     public String map_boon() {
-        return JsonFactory.createUseJSONDates().toJson(data_map);
+        return new JsonSerializerFactory().setJsonFormatForDates(true).create().serialize(data_map).toString();
     }
 
 
@@ -263,7 +252,6 @@ public class SerializationBenchmarks {
         return moshiMapAdapter.toJson(data_map);
     }
 
-
     @Benchmark
     public Object pojo_dslplatform() {
         try {
@@ -282,20 +270,5 @@ public class SerializationBenchmarks {
     @Benchmark
     public Object map_jsonIterator() {
         return JsonStream.serialize(data_map);
-    }
-
-    @Benchmark
-    public Object pojo_kotlinx() {
-        return kotlinxSerializer.map(kotlin_pojo);
-    }
-
-    @Benchmark
-    public Object pojo_klaxon() {
-        return klaxonSerializer.map(kotlin_pojo);
-    }
-
-    //    @Benchmark
-    public String groovy() {
-        return JsonOutput.toJson(data_pojo);
     }
 }

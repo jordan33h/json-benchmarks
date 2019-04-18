@@ -19,13 +19,9 @@ import com.squareup.moshi.*;
 import com.wizzardo.tools.interfaces.Mapper;
 import com.wizzardo.tools.json.JsonTools;
 import com.wizzardo.tools.misc.Unchecked;
-import groovy.json.JsonSlurper;
 import io.circe.ParsingFailure;
-import org.boon.json.JsonFactory;
 import org.boon.json.JsonParserFactory;
-import org.boon.json.JsonSerializerFactory;
 import org.bura.benchmarks.json.domain.*;
-import org.bura.benchmarks.json.kotlin.KotlinHelper;
 import org.json.JSONArray;
 import org.json.simple.parser.ParseException;
 import org.openjdk.jmh.annotations.*;
@@ -42,12 +38,12 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
-@BenchmarkMode(Mode.Throughput)
+@BenchmarkMode({Mode.Throughput, Mode.SingleShotTime})
 @OutputTimeUnit(TimeUnit.SECONDS)
-@Timeout(time = 20)
-@Fork(value = 1, jvmArgsAppend = {"-Xmx2048m", "-server", "-XX:+AggressiveOpts"})
-@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
-@Warmup(iterations = 15, time = 1, timeUnit = TimeUnit.SECONDS)
+@Timeout(time = 30)
+@Fork(value = 1, jvmArgsAppend = {"-Xmx1024m", "-Xms512m", "-server", "-XX:+AggressiveOpts"})
+@Measurement(iterations = 1, time = 1)
+@Warmup(iterations = 1, time = 1)
 public class DeserializationBenchmarks {
 
     public static final String RESOURCE_CITYS = "citys";
@@ -55,11 +51,7 @@ public class DeserializationBenchmarks {
     public static final String RESOURCE_USER = "user";
     public static final String RESOURCE_REQUEST = "request";
 
-    @Param({RESOURCE_CITYS, RESOURCE_REPOS, RESOURCE_USER, RESOURCE_REQUEST})
-//    @Param({ RESOURCE_CITYS })
-//    @Param({RESOURCE_REPOS})
-//    @Param({RESOURCE_REQUEST})
-//    @Param({RESOURCE_USER})
+    @Param({RESOURCE_USER, RESOURCE_REQUEST})
     private String resourceName;
 
     private String resource;
@@ -141,9 +133,6 @@ public class DeserializationBenchmarks {
         jacksonMapperAfterburner = new ObjectMapper();
         jacksonMapperAfterburner.registerModule(new AfterburnerModule());
 
-        kolinxParser = KotlinHelper.getKotlinxParser(resourceName);
-        klaxonParser = KotlinHelper.getKlaxonParser(resourceName);
-
         Unchecked.ignore(() -> JdkDatetimeSupport.enable("yyyy-MM-dd'T'HH:mm:ssXXX"));
     }
 
@@ -197,22 +186,13 @@ public class DeserializationBenchmarks {
 
     @Benchmark
     public Object pojo_boon() {
-        return JsonFactory.create().readValue(resource, List.class, type);
+        return new JsonParserFactory().create().parseList(type, resource);
     }
 
     @Benchmark
     public Object map_boon() {
-        return JsonFactory.create(new JsonParserFactory().setCheckDates(false), new JsonSerializerFactory()).fromJson(resource);
+        return new JsonParserFactory().create().parseMap(resource);
     }
-
-
-    private final JsonSlurper groovy = new JsonSlurper();
-
-    //    @Benchmark
-    public Object groovy() {
-        return groovy.parseText(resource);
-    }
-
 
     @Benchmark
     public Object pojo_tools() {
